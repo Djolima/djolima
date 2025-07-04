@@ -27,10 +27,10 @@
   <div class="formulario">
     <h2>Finalize seu pedido</h2>
     <input type="text" id="nome" placeholder="Seu nome" required>
-    
+
     <textarea id="pedido" placeholder="Produtos selecionados..." readonly></textarea>
     <h3 id="total" style="text-align:center; color:#8B4513;">Total: R$0,00</h3>
-    
+
     <button class="enviar" onclick="enviarPedido()">Enviar pedido pelo WhatsApp</button>
   </div>
 
@@ -82,19 +82,23 @@
         .map(p => `- ${p.nome} x${p.quantidade} (R$${(p.preco * p.quantidade).toFixed(2)})`)
         .join("\n");
       textarea.value = resumo;
-    const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
-    document.getElementById("total").textContent = "Total: R$" + total.toFixed(2).replace('.', ',');
+      const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
+      document.getElementById("total").textContent = "Total: R$" + total.toFixed(2).replace('.', ',');
     }
 
     function enviarPedido() {
       const nome = document.getElementById("nome").value;
       const texto = document.getElementById("pedido").value;
-      if (!nome || !telefone || !texto) {
+      if (!nome || !texto) {
         alert("Preencha seu nome e selecione ao menos um produto.");
         return;
       }
       const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
-    const msg = `Pedido para Djo Bolachas:%0A%0ANome: ${nome}%0AProdutos:%0A${encodeURIComponent(texto)}%0A%0ATotal: R$${total.toFixed(2).replace('.', ',')}`;
+      const msg = encodeURIComponent(
+        `Pedido para Djo Bolachas:\n\n` +
+        `Nome: ${nome}\n\nProdutos:\n${texto}\n\n` +
+        `Total: R$${total.toFixed(2).replace('.', ',')}`
+      );
       const numero = "5548999265357";
       window.open(`https://wa.me/${numero}?text=${msg}`, '_blank');
     }
