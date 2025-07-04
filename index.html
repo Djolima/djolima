@@ -94,7 +94,8 @@
         alert("Preencha seu nome, telefone e selecione ao menos um produto.");
         return;
       }
-      const msg = `Pedido para Djo Bolachas:%0A%0ANome: ${nome}%0ATelefone: ${telefone}%0AProdutos:%0A${encodeURIComponent(texto)}`;
+      const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
+    const msg = `Pedido para Djo Bolachas:%0A%0ANome: ${nome}%0ATelefone: ${telefone}%0AProdutos:%0A${encodeURIComponent(texto)}%0A%0ATotal: R$${total.toFixed(2).replace('.', ',')}`;
       const numero = "5548999265357";
       window.open(`https://wa.me/${numero}?text=${msg}`, '_blank');
     }
