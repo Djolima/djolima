@@ -89,10 +89,9 @@
 
     function enviarPedido() {
       const nome = document.getElementById("nome").value;
-      const telefone = document.getElementById("telefone").value;
       const texto = document.getElementById("pedido").value;
       if (!nome || !telefone || !texto) {
-        alert("Preencha seu nome, telefone e selecione ao menos um produto.");
+        alert("Preencha seu nome e selecione ao menos um produto.");
         return;
       }
       const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
