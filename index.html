@@ -1,6 +1,4 @@
-
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,21 +18,14 @@
 </head>
 <body>
   <h1>Djo Bolachas</h1>
-  <h2>Escolha seus sabores favoritos:</h2>
-
-  <div id="produtos"></div>
-
-  <div class="formulario">
+  <h2>Escolha seus sabores favoritos:</h2>  <div id="produtos"></div>  <div class="formulario">
     <h2>Finalize seu pedido</h2>
-    <input type="text" id="nome" placeholder="Seu nome" required>
+    <input type="text" id="nome" placeholder="Seu nome" required><textarea id="pedido" placeholder="Produtos selecionados..." readonly></textarea>
+<h3 id="total" style="text-align:center; color:#8B4513;">Total: R$0,00</h3>
 
-    <textarea id="pedido" placeholder="Produtos selecionados..." readonly></textarea>
-    <h3 id="total" style="text-align:center; color:#8B4513;">Total: R$0,00</h3>
+<button class="enviar" onclick="enviarPedido()">Enviar pedido pelo WhatsApp</button>
 
-    <button class="enviar" onclick="enviarPedido()">Enviar pedido pelo WhatsApp</button>
-  </div>
-
-  <script>
+  </div>  <script>
     const produtos = [
       { nome: "Pão", preco: 15, quantidade: 0 },
       { nome: "Polvilho 200g", preco: 13, quantidade: 0 },
@@ -95,6 +86,22 @@
         return;
       }
       const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
+
+      // Enviar para Google Sheets
+      const pedidosFiltrados = produtos.filter(p => p.quantidade > 0);
+      const payload = {
+        nome: nome,
+        pedidos: pedidosFiltrados.map(p => ({ nome: p.nome, quantidade: p.quantidade, preco: p.preco }))
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbwSrnvMc8rmWh0gdeNcozK-9zS85LsrhKBIDluWA60KyQmkjeoV7uVJ7dHitrQTdbZZ/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      // Enviar para WhatsApp
       const msg = encodeURIComponent(
         `Pedido para Djo Bolachas:\n\n` +
         `Nome: ${nome}\n\nProdutos:\n${texto}\n\n` +
@@ -103,6 +110,5 @@
       const numero = "5548992236978";
       window.open(`https://wa.me/${numero}?text=${msg}`, '_blank');
     }
-  </script>
-</body>
+  </script></body>
 </html>
