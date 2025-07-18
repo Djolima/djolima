@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,159 +8,101 @@
   <style>
     body { font-family: Arial, sans-serif; background: #fffaf5; padding: 20px; color: #333; }
     h1, h2 { color: #8B4513; text-align: center; }
-    .produto {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 10px;
-      margin: 10px 0;
-      background: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .quantidade {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .quantidade button {
-      padding: 5px 10px;
-      background: #8B4513;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .quantidade button:hover {
-      background: #A0522D;
-    }
-    .formulario {
-      margin-top: 30px;
-      border-top: 2px solid #eee;
-      padding-top: 20px;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button.enviar {
-      background: #228B22;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button.enviar:hover {
-      background: #2E8B57;
-    }
+    .produto { border: 1px solid #ddd; border-radius: 10px; padding: 10px; margin: 10px 0; background: #fff; display: flex; justify-content: space-between; align-items: center; }
+    .quantidade { display: flex; align-items: center; gap: 10px; }
+    .quantidade button { padding: 5px 10px; background: #8B4513; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .quantidade button:hover { background: #A0522D; }
+    .formulario { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; }
+    input, textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+    button.enviar { background: #228B22; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
+    button.enviar:hover { background: #2E8B57; }
   </style>
 </head>
 <body>
   <h1>Djo Bolachas</h1>
   <h2>Escolha seus sabores favoritos:</h2>
+
   <div id="produtos"></div>
 
   <div class="formulario">
     <h2>Finalize seu pedido</h2>
     <input type="text" id="nome" placeholder="Seu nome" required>
+
     <textarea id="pedido" placeholder="Produtos selecionados..." readonly></textarea>
     <h3 id="total" style="text-align:center; color:#8B4513;">Total: R$0,00</h3>
+
     <button class="enviar" onclick="enviarPedido()">Enviar pedido pelo WhatsApp</button>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const produtos = [
-        { nome: "Pão", preco: 15, quantidade: 0 },
-        { nome: "Polvilho 200g", preco: 13, quantidade: 0 },
-        { nome: "Laranja 250g", preco: 13, quantidade: 0 },
-        { nome: "Cookies 250g", preco: 13, quantidade: 0 },
-        { nome: "Amendoim 250g", preco: 13, quantidade: 0 },
-        { nome: "Milho 200g", preco: 13, quantidade: 0 },
-        { nome: "Milho 400g", preco: 20, quantidade: 0 },
-        { nome: "Coco 400g", preco: 18, quantidade: 0 },
-        { nome: "Natal 250g", preco: 18, quantidade: 0 },
-        { nome: "Cristal 400g", preco: 18, quantidade: 0 },
-        { nome: "Goiaba 290g", preco: 18, quantidade: 0 },
-        { nome: "Manteiga 400g", preco: 18, quantidade: 0 },
-        { nome: "Doce de leite 290g", preco: 18, quantidade: 0 },
-        { nome: "Bolacha da vovó 400g", preco: 18, quantidade: 0 },
-        { nome: "Palito de chocolate 290g", preco: 18, quantidade: 0 },
-        { nome: "Bolacha sortida 400g", preco: 20, quantidade: 0 }
-      ];
+    const produtos = [
+      { nome: "Pão", preco: 15, quantidade: 0 },
+      { nome: "Polvilho 200g", preco: 13, quantidade: 0 },
+      { nome: "Laranja 250g", preco: 13, quantidade: 0 },
+      { nome: "Cookies 250g", preco: 13, quantidade: 0 },
+      { nome: "Amendoim 250g", preco: 13, quantidade: 0 },
+      { nome: "Milho 200g", preco: 13, quantidade: 0 },
+      { nome: "Milho 400g", preco: 20, quantidade: 0 },
+      { nome: "Coco 400g", preco: 18, quantidade: 0 },
+      { nome: "Natal 250g", preco: 18, quantidade: 0 },
+      { nome: "Cristal 400g", preco: 18, quantidade: 0 },
+      { nome: "Goiaba 290g", preco: 18, quantidade: 0 },
+      { nome: "Manteiga 400g", preco: 18, quantidade: 0 },
+      { nome: "Doce de leite 290g", preco: 18, quantidade: 0 },
+      { nome: "Bolacha da vovó 400g", preco: 18, quantidade: 0 },
+      { nome: "Palito de chocolate 290g", preco: 18, quantidade: 0 },
+      { nome: "Bolacha sortida 400g", preco: 20, quantidade: 0 }
+    ];
 
-      const container = document.getElementById("produtos");
+    const container = document.getElementById("produtos");
 
-      produtos.forEach((p, i) => {
-        const div = document.createElement("div");
-        div.className = "produto";
-        div.innerHTML = `
-          <span>${p.nome} - R$${p.preco.toFixed(2)}</span>
-          <div class="quantidade">
-            <button onclick="alterarQuantidade(${i}, -1)">-</button>
-            <span id="qtd-${i}">0</span>
-            <button onclick="alterarQuantidade(${i}, 1)">+</button>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-
-      window.alterarQuantidade = function (index, delta) {
-        const produto = produtos[index];
-        produto.quantidade = Math.max(0, produto.quantidade + delta);
-        document.getElementById(`qtd-${index}`).textContent = produto.quantidade;
-        atualizarPedido();
-      };
-
-      function atualizarPedido() {
-        const textarea = document.getElementById("pedido");
-        const resumo = produtos
-          .filter(p => p.quantidade > 0)
-          .map(p => `- ${p.nome} x${p.quantidade} (R$${(p.preco * p.quantidade).toFixed(2)})`)
-          .join("\n");
-        textarea.value = resumo;
-        const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
-        document.getElementById("total").textContent = "Total: R$" + total.toFixed(2).replace('.', ',');
-      }
-
-      window.enviarPedido = function () {
-        const nome = document.getElementById("nome").value;
-        const texto = document.getElementById("pedido").value;
-        if (!nome || !texto) {
-          alert("Preencha seu nome e selecione ao menos um produto.");
-          return;
-        }
-
-        const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
-        const produtosSelecionados = produtos.filter(p => p.quantidade > 0);
-
-        // Enviar para Google Sheets
-          fetch("https://script.google.com/macros/s/AKfycbwsnWwW-1viFpmPCactvgyAw9qO1FwECMlJzv_XgDJN46XJSWHJVR0CBTorirJ24VoY4A/exec", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    nome: nome,
-    total: total.toFixed(2),
-    produtos: produtosSelecionados.map(p => `${p.nome} x${p.quantidade}`)
-  })
-}) {
-  if (!response.ok) throw new Error("Planilha não recebeu");
-  const msg = encodeURIComponent(
-    `Pedido para Djo Bolachas:\n\nNome: ${nome}\n\nProdutos:\n${texto}\n\nTotal: R$${total.toFixed(2).replace('.', ',')}`
-  );
-  window.open(`https://wa.me/5548992236978?text=${msg}`, '_blank');
-})
-.catch(error => {
-  alert("Erro ao enviar: " + error);
-  console.error(error);
-});
-
+    produtos.forEach((p, i) => {
+      const div = document.createElement("div");
+      div.className = "produto";
+      div.innerHTML = `
+        <span>${p.nome} - R$${p.preco.toFixed(2)}</span>
+        <div class="quantidade">
+          <button onclick="alterarQuantidade(${i}, -1)">-</button>
+          <span id="qtd-${i}">0</span>
+          <button onclick="alterarQuantidade(${i}, 1)">+</button>
+        </div>`;
+      container.appendChild(div);
     });
+
+    function alterarQuantidade(index, delta) {
+      const produto = produtos[index];
+      produto.quantidade = Math.max(0, produto.quantidade + delta);
+      document.getElementById(`qtd-${index}`).textContent = produto.quantidade;
+      atualizarPedido();
+    }
+
+    function atualizarPedido() {
+      const textarea = document.getElementById("pedido");
+      const resumo = produtos
+        .filter(p => p.quantidade > 0)
+        .map(p => `- ${p.nome} x${p.quantidade} (R$${(p.preco * p.quantidade).toFixed(2)})`)
+        .join("\n");
+      textarea.value = resumo;
+      const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
+      document.getElementById("total").textContent = "Total: R$" + total.toFixed(2).replace('.', ',');
+    }
+
+    function enviarPedido() {
+      const nome = document.getElementById("nome").value;
+      const texto = document.getElementById("pedido").value;
+      if (!nome || !texto) {
+        alert("Preencha seu nome e selecione ao menos um produto.");
+        return;
+      }
+      const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
+      const msg = encodeURIComponent(
+        `Pedido para Djo Bolachas:\n\n` +
+        `Nome: ${nome}\n\nProdutos:\n${texto}\n\n` +
+        `Total: R$${total.toFixed(2).replace('.', ',')}`
+      );
+      const numero = "5548992236978";
+      window.open(`https://wa.me/${numero}?text=${msg}`, '_blank');
+    }
   </script>
 </body>
 </html>
