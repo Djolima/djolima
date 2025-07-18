@@ -139,25 +139,27 @@
         const produtosSelecionados = produtos.filter(p => p.quantidade > 0);
 
         // Enviar para Google Sheets
-        fetch("https://script.google.com/macros/library/d/11eJE1K4-YuaJ1kNdEIQaykGX4QmtyEsTd2_plU3oxRbFgxlY3Kg_mhbP/1", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            nome: nome,
-            total: total.toFixed(2),
-            produtos: produtosSelecionados.map(p => `${p.nome} x${p.quantidade}`)
-          })
-        });
+          fetch("https://script.google.com/macros/s/AKfycbwsnWwW-1viFpmPCactvgyAw9qO1FwECMlJzv_XgDJN46XJSWHJVR0CBTorirJ24VoY4A/exec", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    nome: nome,
+    total: total.toFixed(2),
+    produtos: produtosSelecionados.map(p => `${p.nome} x${p.quantidade}`)
+  })
+})
+.then(response => {
+  if (!response.ok) throw new Error("Planilha não recebeu");
+  const msg = encodeURIComponent(
+    `Pedido para Djo Bolachas:\n\nNome: ${nome}\n\nProdutos:\n${texto}\n\nTotal: R$${total.toFixed(2).replace('.', ',')}`
+  );
+  window.open(`https://wa.me/5548992236978?text=${msg}`, '_blank');
+})
+.catch(error => {
+  alert("Erro ao enviar: " + error);
+  console.error(error);
+});
 
-        // Enviar para WhatsApp
-        const msg = encodeURIComponent(
-          `Pedido para Djo Bolachas:\n\n` +
-          `Nome: ${nome}\n\nProdutos:\n${texto}\n\n` +
-          `Total: R$${total.toFixed(2).replace('.', ',')}`
-        );
-        const numero = "5548992236978";
-        window.open(`https://wa.me/${numero}?text=${msg}`, '_blank');
-      };
     });
   </script>
 </body>
