@@ -106,8 +106,8 @@ fetch("https://script.google.com/macros/s/AKfycbzHzMHL5VfKCz97UXQXdP99k4wtZaZY7D
       .map(p => `${p.nome} x${p.quantidade}`)
   })
 });
-
-
+      
+.then(() => {
       // Enviar para WhatsApp
       const msg = encodeURIComponent(
         `Pedido para Djo Bolachas:\n\n` +
