@@ -139,7 +139,7 @@
         const produtosSelecionados = produtos.filter(p => p.quantidade > 0);
 
         // Enviar para Google Sheets
-        fetch("https://script.google.com/macros/s/AKfycbzHzMHL5VfKCz97UXQXdP99k4wtZaZY7DVY4h5wqblp5KGVaKwLbv9PTrbl-4qhx-VqKQ/exec", {
+        fetch("https://script.google.com/macros/library/d/11eJE1K4-YuaJ1kNdEIQaykGX4QmtyEsTd2_plU3oxRbFgxlY3Kg_mhbP/1", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
