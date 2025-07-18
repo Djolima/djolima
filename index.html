@@ -94,12 +94,19 @@
         pedidos: pedidosFiltrados.map(p => ({ nome: p.nome, quantidade: p.quantidade, preco: p.preco }))
       };
 
-      fetch("https://script.google.com/macros/s/AKfycbwSrnvMc8rmWh0gdeNcozK-9zS85LsrhKBIDluWA60KyQmkjeoV7uVJ7dHitrQTdbZZ/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
+      // Envio para a planilha Google
+fetch("https://script.google.com/macros/s/AKfycbwSrnvMc8rmWh0gdeNcozK-9zS85LsrhKBIDluWA60KyQmkjeoV7uVJ7dHitrQTdbZZ/exec", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    nome: nome,
+    total: total.toFixed(2),
+    produtos: produtos
+      .filter(p => p.quantidade > 0)
+      .map(p => `${p.nome} x${p.quantidade}`)
+  })
+});
+
 
       // Enviar para WhatsApp
       const msg = encodeURIComponent(
