@@ -147,8 +147,7 @@
     total: total.toFixed(2),
     produtos: produtosSelecionados.map(p => `${p.nome} x${p.quantidade}`)
   })
-})
-.then(response => {
+}) {
   if (!response.ok) throw new Error("Planilha não recebeu");
   const msg = encodeURIComponent(
     `Pedido para Djo Bolachas:\n\nNome: ${nome}\n\nProdutos:\n${texto}\n\nTotal: R$${total.toFixed(2).replace('.', ',')}`
