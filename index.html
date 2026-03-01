@@ -35,6 +35,7 @@ header {
   border-radius: 10px;
   text-align: center;
   font-size: 13px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .produto img {
@@ -85,7 +86,7 @@ header {
   right: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.3);
   justify-content: flex-end;
 }
 
@@ -95,12 +96,15 @@ header {
 
 .modal-conteudo {
   background: white;
-  width: 350px;
-  height: 100%;
+  width: 320px;
+  height: 85%;
+  margin: auto 0;
+  border-radius: 15px 0 0 15px;
   padding: 20px;
   display: flex;
   flex-direction: column;
   animation: slideIn 0.3s ease forwards;
+  box-shadow: -4px 0 15px rgba(0,0,0,0.2);
 }
 
 @keyframes slideIn {
@@ -186,12 +190,10 @@ header {
 
 <div class="produtos" id="listaProdutos"></div>
 
-<!-- BOTÃO FLUTUANTE -->
 <button class="carrinho-flutuante" onclick="abrirCarrinho()">
   🛒
 </button>
 
-<!-- MODAL -->
 <div id="modalCarrinho" class="modal">
   <div class="modal-conteudo">
     <h2>Seu Carrinho</h2>
@@ -214,9 +216,8 @@ header {
 
 <script>
 
-/* ====== PRODUTOS ====== */
 const produtos = [
-   { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "pascoa.jpeg", destaque: true },
+  { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "pascoa.jpeg", destaque: true },
   { nome: "Pão", preco: 15, quantidade: 0, imagem: "imagens/pao.jpg" },
   { nome: "Polvilho 200g", preco: 13, quantidade: 0, imagem: "imagens/polvilho.jpg" },
   { nome: "Laranja 250g", preco: 13, quantidade: 0, imagem: "imagens/laranja.jpg" },
@@ -248,21 +249,20 @@ produtos.forEach((produto, index) => {
   `;
 });
 
-/* ====== FUNÇÕES CARRINHO ====== */
-
 function abrirCarrinho() {
   document.getElementById("modalCarrinho").classList.add("ativo");
   atualizarModal();
 }
 
 function fecharCarrinho() {
-  const nome = document.getElementById("nomeCliente").value.trim();
-  if (!nome) {
-    alert("Digite seu nome antes de fechar.");
-    return;
-  }
   document.getElementById("modalCarrinho").classList.remove("ativo");
 }
+
+document.getElementById("modalCarrinho").addEventListener("click", function(e) {
+  if (e.target === this) {
+    fecharCarrinho();
+  }
+});
 
 function aumentarQuantidade(index) {
   produtos[index].quantidade++;
@@ -293,7 +293,6 @@ function atualizarModal() {
     container.innerHTML = "Seu carrinho está vazio.";
   } else {
     selecionados.forEach(p => {
-
       const subtotal = p.quantidade * p.preco;
 
       container.innerHTML += `
@@ -302,7 +301,6 @@ function atualizarModal() {
           <div class="item-info">
             <strong>${p.quantidade}x ${p.nome}</strong>
             R$ ${p.preco.toFixed(2).replace('.', ',')} cada
-
             <div class="controle-quantidade">
               <button onclick="diminuirQuantidade(${p.index})">-</button>
               <button onclick="aumentarQuantidade(${p.index})">+</button>
@@ -326,7 +324,6 @@ function atualizarModal() {
 }
 
 function enviarPedido() {
-
   const nome = document.getElementById("nomeCliente").value.trim();
 
   if (!nome) {
@@ -356,5 +353,6 @@ function enviarPedido() {
 }
 
 </script>
+
 </body>
 </html>
