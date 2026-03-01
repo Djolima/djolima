@@ -7,208 +7,204 @@
 
 <style>
 
-/* ===== GERAL ===== */
-body {
+body{
   font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f8f5f2;
+  margin:0;
+  background:#f8f5f2;
 }
 
-header {
-  background: #8B4513;
-  color: white;
-  padding: 15px;
-  text-align: center;
+header{
+  background:#8B4513;
+  color:white;
+  padding:15px;
+  text-align:center;
 }
 
-/* ===== PRODUTOS ===== */
-.produtos {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
-  gap: 12px;
-  padding: 15px;
+.produtos{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:12px;
+  padding:15px;
 }
 
-.produto {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 13px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+.produto{
+  background:white;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+  font-size:13px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
 }
 
-.produto img {
-  width: 100%;
-  height: 110px;
-  object-fit: cover;
-  border-radius: 8px;
+.produto img{
+  width:100%;
+  height:110px;
+  object-fit:cover;
+  border-radius:8px;
 }
 
-.preco {
-  color: #8B4513;
-  font-weight: bold;
+.preco{
+  color:#8B4513;
+  font-weight:bold;
 }
 
-.controle-produto {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  margin-top: 5px;
+.controle-produto{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  margin-top:5px;
 }
 
-.controle-produto button {
-  width: 25px;
-  height: 25px;
-  border: none;
-  border-radius: 6px;
-  background: #8B4513;
-  color: white;
-  cursor: pointer;
+.controle-produto button{
+  width:25px;
+  height:25px;
+  border:none;
+  border-radius:6px;
+  background:#8B4513;
+  color:white;
+  cursor:pointer;
 }
 
-/* ===== CARRINHO FLUTUANTE ===== */
-.carrinho-flutuante {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #8B4513;
-  color: white;
-  border: none;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  font-size: 22px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  z-index: 1000;
-  cursor: pointer;
+/* CARRINHO FLUTUANTE */
+.carrinho-flutuante{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#8B4513;
+  color:white;
+  border:none;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  font-size:22px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+  cursor:pointer;
+  z-index:1000;
 }
 
-.badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background: red;
-  color: white;
-  font-size: 12px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.badge{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  background:red;
+  color:white;
+  font-size:12px;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-/* ===== MODAL ===== */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.3);
-  justify-content: flex-end;
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  top:0;
+  right:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.3);
+  justify-content:flex-end;
 }
 
-.modal.ativo {
-  display: flex;
+.modal.ativo{
+  display:flex;
 }
 
-.modal-conteudo {
-  background: white;
-  width: 320px;
-  height: 80%;
-  margin: auto 0;
-  border-radius: 15px 0 0 15px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  animation: slideIn 0.3s ease forwards;
-  box-shadow: -4px 0 15px rgba(0,0,0,0.2);
+.modal-conteudo{
+  background:white;
+  width:320px;
+  height:80%;
+  margin:auto 0;
+  border-radius:15px 0 0 15px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  animation:slideIn 0.3s ease forwards;
 }
 
-@keyframes slideIn {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+@keyframes slideIn{
+  from{transform:translateX(100%);}
+  to{transform:translateX(0);}
 }
 
-#listaCarrinho {
-  flex: 1;
-  overflow-y: auto;
-  margin-top: 10px;
+#listaCarrinho{
+  flex:1;
+  overflow-y:auto;
+  margin-top:10px;
 }
 
-.item-carrinho {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 8px;
+.item-carrinho{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+  border-bottom:1px solid #eee;
+  padding-bottom:8px;
 }
 
-.item-carrinho img {
-  width: 45px;
-  height: 45px;
-  object-fit: cover;
-  border-radius: 8px;
+.item-carrinho img{
+  width:45px;
+  height:45px;
+  object-fit:cover;
+  border-radius:8px;
 }
 
-.item-info {
-  flex: 1;
-  font-size: 13px;
+.item-info{
+  flex:1;
+  font-size:13px;
 }
 
-.subtotal {
-  font-weight: bold;
-  color: #8B4513;
-  font-size: 13px;
+.subtotal{
+  font-weight:bold;
+  color:#8B4513;
+  font-size:13px;
 }
 
-.controle-quantidade {
-  display: flex;
-  gap: 5px;
-  margin-top: 5px;
+.controle-quantidade{
+  display:flex;
+  gap:5px;
+  margin-top:5px;
 }
 
-.controle-quantidade button {
-  width: 25px;
-  height: 25px;
-  border: none;
-  border-radius: 6px;
-  background: #8B4513;
-  color: white;
-  cursor: pointer;
+.controle-quantidade button{
+  width:25px;
+  height:25px;
+  border:none;
+  border-radius:6px;
+  background:#8B4513;
+  color:white;
+  cursor:pointer;
 }
 
-/* ===== BOTÃO REMOVER ÍCONE ===== */
-.btn-remover {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  margin-left: auto;
+.btn-remover{
+  background:none;
+  border:none;
+  font-size:18px;
+  cursor:pointer;
+  margin-left:auto;
 }
 
-/* ===== BOTÕES FINAIS ===== */
-.btn-finalizar {
-  background: green;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  margin-top: 10px;
+.btn-finalizar{
+  background:green;
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px;
+  cursor:pointer;
 }
 
-.btn-voltar {
-  background: none;
-  border: none;
-  color: #8B4513;
-  font-weight: bold;
-  margin-top: 10px;
-  cursor: pointer;
+.btn-voltar{
+  background:none;
+  border:none;
+  color:#8B4513;
+  font-weight:bold;
+  margin-top:10px;
+  cursor:pointer;
 }
 
 </style>
@@ -250,8 +246,10 @@ header {
 
 <script>
 
+const telefone = "5548992236978"; // ALTERE SE NECESSÁRIO
+
 const produtos = [
-  { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "pascoa.jpeg", destaque: true },
+   { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "pascoa.jpeg", destaque: true },
   { nome: "Pão", preco: 15, quantidade: 0, imagem: "logo minimalista par.png" },
   { nome: "Polvilho 200g", preco: 13, quantidade: 0, imagem: "logo minimalista par.png" },
   { nome: "Laranja 250g", preco: 13, quantidade: 0, imagem: "logo minimalista par.png" },
@@ -263,8 +261,8 @@ const produtos = [
   { nome: "Natal 250g", preco: 18, quantidade: 0, imagem: "logo minimalista par.png" },
   { nome: "Cristal 400g", preco: 18, quantidade: 0, imagem: "logo minimalista par.png" },
   { nome: "Goiaba 290g", preco: 18, quantidade: 0, imagem: "logo minimalista par.png" },
-  { nome: "Manteiga 400g", preco: 18, quantidade: 0, imagem: "logo minimalista par.png" },
-  { nome: "Doce de leite 290g", preco: 18, quantidade: 0, imagem: "imagens/docedeleite.jpg" },
+  { nome: "Manteiga 400g", preco: 18, quantidade: 0, imagem: "manteiga.jpeg" },
+  { nome: "Doce de leite 290g", preco: 18, quantidade: 0, imagem: "logo minimalista par.png" },
   { nome: "Bolacha da vovó 400g", preco: 18, quantidade: 0, imagem: "logo minimalista par.png" },
   { nome: "Palito de chocolate 290g", preco: 18, quantidade: 0, imagem: "palito chocolate.jpeg" },
   { nome: "Bolacha sortida 400g", preco: 20, quantidade: 0, imagem: "sortida.jpeg", destaque: true }
@@ -272,12 +270,12 @@ const produtos = [
 
 const listaProdutos = document.getElementById("listaProdutos");
 
-produtos.forEach((produto, index) => {
+produtos.forEach((produto,index)=>{
   listaProdutos.innerHTML += `
     <div class="produto">
       <img src="${produto.imagem}">
       <h3>${produto.nome}</h3>
-      <p class="preco">R$ ${produto.preco.toFixed(2).replace('.', ',')}</p>
+      <p class="preco">R$ ${produto.preco.toFixed(2).replace('.',',')}</p>
       <div class="controle-produto">
         <button onclick="diminuirQuantidade(${index})">-</button>
         <span id="qtd-${index}">0</span>
@@ -287,58 +285,58 @@ produtos.forEach((produto, index) => {
   `;
 });
 
-function atualizarContador() {
-  const totalItens = produtos.reduce((acc,p)=>acc+p.quantidade,0);
-  document.getElementById("contadorItens").textContent = totalItens;
+function atualizarContador(){
+  const total = produtos.reduce((acc,p)=>acc+p.quantidade,0);
+  document.getElementById("contadorItens").textContent = total;
 
   produtos.forEach((p,i)=>{
     document.getElementById(`qtd-${i}`).textContent = p.quantidade;
   });
 }
 
-function abrirCarrinho() {
+function abrirCarrinho(){
   document.getElementById("modalCarrinho").classList.add("ativo");
   atualizarModal();
 }
 
-function fecharCarrinho() {
+function fecharCarrinho(){
   document.getElementById("modalCarrinho").classList.remove("ativo");
 }
 
-function aumentarQuantidade(index) {
+function aumentarQuantidade(index){
   produtos[index].quantidade++;
   atualizarContador();
   atualizarModal();
 }
 
-function diminuirQuantidade(index) {
-  if (produtos[index].quantidade > 0) {
+function diminuirQuantidade(index){
+  if(produtos[index].quantidade>0){
     produtos[index].quantidade--;
   }
   atualizarContador();
   atualizarModal();
 }
 
-function removerItem(index) {
-  if (confirm("Deseja remover este item do carrinho?")) {
-    produtos[index].quantidade = 0;
+function removerItem(index){
+  if(confirm("Deseja remover este item do carrinho?")){
+    produtos[index].quantidade=0;
     atualizarContador();
     atualizarModal();
   }
 }
 
-function atualizarModal() {
-  const container = document.getElementById("listaCarrinho");
-  container.innerHTML = "";
+function atualizarModal(){
+  const container=document.getElementById("listaCarrinho");
+  container.innerHTML="";
 
-  const selecionados = produtos
-    .map((p, index) => ({...p, index}))
-    .filter(p => p.quantidade > 0);
+  const selecionados=produtos
+  .map((p,index)=>({...p,index}))
+  .filter(p=>p.quantidade>0);
 
-  selecionados.forEach(p => {
-    const subtotal = p.quantidade * p.preco;
+  selecionados.forEach(p=>{
+    const subtotal=p.quantidade*p.preco;
 
-    container.innerHTML += `
+    container.innerHTML+=`
       <div class="item-carrinho">
         <img src="${p.imagem}">
         <div class="item-info">
@@ -349,22 +347,49 @@ function atualizarModal() {
           </div>
         </div>
         <div class="subtotal">
-          R$ ${subtotal.toFixed(2).replace('.', ',')}
+          R$ ${subtotal.toFixed(2).replace('.',',')}
         </div>
-        <button class="btn-remover" onclick="removerItem(${p.index})">
-          🗑️
-        </button>
+        <button class="btn-remover" onclick="removerItem(${p.index})">🗑️</button>
       </div>
     `;
   });
 
-  const total = produtos.reduce((acc,p)=>acc+(p.quantidade*p.preco),0);
-  document.getElementById("totalModal").textContent =
-    "Total: R$" + total.toFixed(2).replace('.', ',');
+  const total=produtos.reduce((acc,p)=>acc+(p.quantidade*p.preco),0);
+  document.getElementById("totalModal").textContent=
+  "Total: R$"+total.toFixed(2).replace('.',',');
 }
 
-function enviarPedido() {
-  alert("Pedido enviado!");
+function enviarPedido(){
+
+  const nome=document.getElementById("nomeCliente").value.trim();
+
+  if(!nome){
+    alert("Digite seu nome antes de finalizar.");
+    return;
+  }
+
+  const selecionados=produtos.filter(p=>p.quantidade>0);
+
+  if(selecionados.length===0){
+    alert("Seu carrinho está vazio!");
+    return;
+  }
+
+  let mensagem="🍪 Pedido Djo Bolachas 🍪\n\n";
+  mensagem+="Cliente: "+nome+"\n\n";
+
+  let total=0;
+
+  selecionados.forEach(p=>{
+    const subtotal=p.quantidade*p.preco;
+    total+=subtotal;
+    mensagem+=`${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}\n`;
+  });
+
+  mensagem+="\nTotal: R$ "+total.toFixed(2).replace('.',',');
+
+  const url=`https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+  window.open(url,"_blank");
 }
 
 atualizarContador();
