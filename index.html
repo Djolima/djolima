@@ -5,10 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Djo Bolachas</title>
 
-  <style>
-
+<style>
 body{
-  font-family: Arial, sans-serif;
+  font-family:Arial, sans-serif;
   margin:0;
   background:#f8f5f2;
 }
@@ -41,6 +40,7 @@ header{
   height:110px;
   object-fit:cover;
   border-radius:8px;
+  cursor:pointer;
 }
 
 .preco{
@@ -66,7 +66,6 @@ header{
   cursor:pointer;
 }
 
-/* CARRINHO FLUTUANTE */
 .carrinho-flutuante{
   position:fixed;
   bottom:20px;
@@ -98,7 +97,6 @@ header{
   align-items:center;
 }
 
-/* MODAL */
 .modal{
   display:none;
   position:fixed;
@@ -123,12 +121,6 @@ header{
   padding:20px;
   display:flex;
   flex-direction:column;
-  animation:slideIn 0.3s ease forwards;
-}
-
-@keyframes slideIn{
-  from{transform:translateX(100%);}
-  to{transform:translateX(0);}
 }
 
 #listaCarrinho{
@@ -153,10 +145,7 @@ header{
   border-radius:8px;
 }
 
-.item-info{
-  flex:1;
-  font-size:13px;
-}
+.item-info{ flex:1; font-size:13px; }
 
 .subtotal{
   font-weight:bold;
@@ -207,49 +196,72 @@ header{
   cursor:pointer;
 }
 
+/* MODAL IMAGEM */
+.modal-imagem{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+}
+
+.modal-imagem img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:10px;
+}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Djo Bolachas</h1>
+<h1>Djo Bolachas</h1>
 </header>
 
 <div class="produtos" id="listaProdutos"></div>
 
 <button class="carrinho-flutuante" onclick="abrirCarrinho()">
-  🛒
-  <div class="badge" id="contadorItens">0</div>
+🛒
+<div class="badge" id="contadorItens">0</div>
 </button>
 
 <div id="modalCarrinho" class="modal">
-  <div class="modal-conteudo">
-    <h2>Seu Carrinho</h2>
+<div class="modal-conteudo">
+<h2>Seu Carrinho</h2>
 
-    <input type="text" id="nomeCliente"
-    placeholder="Digite seu nome"
-    style="padding:8px; margin:10px 0; border-radius:8px; border:1px solid #ddd;">
+<input type="text" id="nomeCliente"
+placeholder="Digite seu nome"
+style="padding:8px; margin:10px 0; border-radius:8px; border:1px solid #ddd;">
 
-    <div id="listaCarrinho"></div>
+<div id="listaCarrinho"></div>
 
-    <h3 id="totalModal" class="preco">Total: R$0,00</h3>
+<h3 id="totalModal" class="preco">Total: R$0,00</h3>
 
-    <button class="btn-finalizar" onclick="enviarPedido()">
-      Finalizar no WhatsApp
-    </button>
+<button class="btn-finalizar" onclick="enviarPedido()">
+Finalizar no WhatsApp
+</button>
 
-    <button class="btn-voltar" onclick="fecharCarrinho()">
-      Voltar
-    </button>
-  </div>
+<button class="btn-voltar" onclick="fecharCarrinho()">
+Voltar
+</button>
+</div>
+</div>
+
+<div id="modalImagem" class="modal-imagem" onclick="fecharImagem()">
+<img id="imagemGrande">
 </div>
 
 <script>
 
-const telefone = "5548992236978"; // ALTERE SE NECESSÁRIO
+const telefone="5548992236978";
 
-const produtos = [
-   { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "pascoa.jpeg", destaque: true },
+let produtos=[
+  { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "pascoa.jpeg", destaque: true },
   { nome: "Pão", preco: 15, quantidade: 0, imagem: "logo minimalista par.png" },
   { nome: "Polvilho 200g", preco: 13, quantidade: 0, imagem: "logo minimalista par.png" },
   { nome: "Laranja 250g", preco: 13, quantidade: 0, imagem: "logo minimalista par.png" },
@@ -268,128 +280,124 @@ const produtos = [
   { nome: "Bolacha sortida 400g", preco: 20, quantidade: 0, imagem: "sortida.jpeg", destaque: true }
 ];
 
-const listaProdutos = document.getElementById("listaProdutos");
+function salvarCarrinho(){
+localStorage.setItem("carrinho",JSON.stringify(produtos));
+}
+
+function carregarCarrinho(){
+const dados=localStorage.getItem("carrinho");
+if(dados){
+produtos=JSON.parse(dados);
+}
+}
+
+carregarCarrinho();
+
+const listaProdutos=document.getElementById("listaProdutos");
 
 produtos.forEach((produto,index)=>{
-  listaProdutos.innerHTML += `
-    <div class="produto">
-      <img src="${produto.imagem}">
-      <h3>${produto.nome}</h3>
-      <p class="preco">R$ ${produto.preco.toFixed(2).replace('.',',')}</p>
-      <div class="controle-produto">
-        <button onclick="diminuirQuantidade(${index})">-</button>
-        <span id="qtd-${index}">0</span>
-        <button onclick="aumentarQuantidade(${index})">+</button>
-      </div>
-    </div>
-  `;
+listaProdutos.innerHTML+=`
+<div class="produto">
+<img src="${produto.imagem}" onclick="abrirImagem('${produto.imagem}')">
+<h3>${produto.nome}</h3>
+<p class="preco">R$ ${produto.preco.toFixed(2).replace('.',',')}</p>
+<div class="controle-produto">
+<button onclick="diminuirQuantidade(${index})">-</button>
+<span id="qtd-${index}">${produto.quantidade}</span>
+<button onclick="aumentarQuantidade(${index})">+</button>
+</div>
+</div>`;
 });
 
 function atualizarContador(){
-  const total = produtos.reduce((acc,p)=>acc+p.quantidade,0);
-  document.getElementById("contadorItens").textContent = total;
-
-  produtos.forEach((p,i)=>{
-    document.getElementById(`qtd-${i}`).textContent = p.quantidade;
-  });
+const total=produtos.reduce((a,p)=>a+p.quantidade,0);
+document.getElementById("contadorItens").textContent=total;
+produtos.forEach((p,i)=>{
+document.getElementById(`qtd-${i}`).textContent=p.quantidade;
+});
+salvarCarrinho();
 }
 
 function abrirCarrinho(){
-  document.getElementById("modalCarrinho").classList.add("ativo");
-  atualizarModal();
+document.getElementById("modalCarrinho").classList.add("ativo");
+atualizarModal();
 }
 
 function fecharCarrinho(){
-  document.getElementById("modalCarrinho").classList.remove("ativo");
+document.getElementById("modalCarrinho").classList.remove("ativo");
 }
 
-function aumentarQuantidade(index){
-  produtos[index].quantidade++;
-  atualizarContador();
-  atualizarModal();
+function aumentarQuantidade(i){
+produtos[i].quantidade++;
+atualizarContador();
+atualizarModal();
 }
 
-function diminuirQuantidade(index){
-  if(produtos[index].quantidade>0){
-    produtos[index].quantidade--;
-  }
-  atualizarContador();
-  atualizarModal();
+function diminuirQuantidade(i){
+if(produtos[i].quantidade>0){
+produtos[i].quantidade--;
+}
+atualizarContador();
+atualizarModal();
 }
 
-function removerItem(index){
-  if(confirm("Deseja remover este item do carrinho?")){
-    produtos[index].quantidade=0;
-    atualizarContador();
-    atualizarModal();
-  }
+function removerItem(i){
+if(confirm("Remover item?")){
+produtos[i].quantidade=0;
+atualizarContador();
+atualizarModal();
+}
 }
 
 function atualizarModal(){
-  const container=document.getElementById("listaCarrinho");
-  container.innerHTML="";
-
-  const selecionados=produtos
-  .map((p,index)=>({...p,index}))
-  .filter(p=>p.quantidade>0);
-
-  selecionados.forEach(p=>{
-    const subtotal=p.quantidade*p.preco;
-
-    container.innerHTML+=`
-      <div class="item-carrinho">
-        <img src="${p.imagem}">
-        <div class="item-info">
-          <strong>${p.quantidade}x ${p.nome}</strong>
-          <div class="controle-quantidade">
-            <button onclick="diminuirQuantidade(${p.index})">-</button>
-            <button onclick="aumentarQuantidade(${p.index})">+</button>
-          </div>
-        </div>
-        <div class="subtotal">
-          R$ ${subtotal.toFixed(2).replace('.',',')}
-        </div>
-        <button class="btn-remover" onclick="removerItem(${p.index})">🗑️</button>
-      </div>
-    `;
-  });
-
-  const total=produtos.reduce((acc,p)=>acc+(p.quantidade*p.preco),0);
-  document.getElementById("totalModal").textContent=
-  "Total: R$"+total.toFixed(2).replace('.',',');
+const container=document.getElementById("listaCarrinho");
+container.innerHTML="";
+const selecionados=produtos.map((p,i)=>({...p,i})).filter(p=>p.quantidade>0);
+selecionados.forEach(p=>{
+const subtotal=p.quantidade*p.preco;
+container.innerHTML+=`
+<div class="item-carrinho">
+<img src="${p.imagem}">
+<div class="item-info">
+<strong>${p.quantidade}x ${p.nome}</strong>
+<div class="controle-quantidade">
+<button onclick="diminuirQuantidade(${p.i})">-</button>
+<button onclick="aumentarQuantidade(${p.i})">+</button>
+</div>
+</div>
+<div class="subtotal">
+R$ ${subtotal.toFixed(2).replace('.',',')}
+</div>
+<button class="btn-remover" onclick="removerItem(${p.i})">🗑️</button>
+</div>`;
+});
+const total=produtos.reduce((a,p)=>a+(p.quantidade*p.preco),0);
+document.getElementById("totalModal").textContent="Total: R$"+total.toFixed(2).replace('.',',');
 }
 
 function enviarPedido(){
+const nome=document.getElementById("nomeCliente").value.trim();
+if(!nome){ alert("Digite seu nome."); return; }
+const selecionados=produtos.filter(p=>p.quantidade>0);
+if(selecionados.length===0){ alert("Carrinho vazio!"); return; }
+let mensagem="🍪 Pedido Djo Bolachas 🍪\n\nCliente: "+nome+"\n\n";
+let total=0;
+selecionados.forEach(p=>{
+const subtotal=p.quantidade*p.preco;
+total+=subtotal;
+mensagem+=`${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}\n`;
+});
+mensagem+="\nTotal: R$ "+total.toFixed(2).replace('.',',');
+window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`,"_blank");
+}
 
-  const nome=document.getElementById("nomeCliente").value.trim();
+function abrirImagem(src){
+document.getElementById("imagemGrande").src=src;
+document.getElementById("modalImagem").style.display="flex";
+}
 
-  if(!nome){
-    alert("Digite seu nome antes de finalizar.");
-    return;
-  }
-
-  const selecionados=produtos.filter(p=>p.quantidade>0);
-
-  if(selecionados.length===0){
-    alert("Seu carrinho está vazio!");
-    return;
-  }
-
-  let mensagem="🍪 Pedido Djo Bolachas 🍪\n\n";
-  mensagem+="Cliente: "+nome+"\n\n";
-
-  let total=0;
-
-  selecionados.forEach(p=>{
-    const subtotal=p.quantidade*p.preco;
-    total+=subtotal;
-    mensagem+=`${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}\n`;
-  });
-
-  mensagem+="\nTotal: R$ "+total.toFixed(2).replace('.',',');
-
-  const url=`https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
-  window.open(url,"_blank");
+function fecharImagem(){
+document.getElementById("modalImagem").style.display="none";
 }
 
 atualizarContador();
