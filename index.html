@@ -7,7 +7,7 @@
 
 <style>
 
-/* ====== GERAL ====== */
+/* ===== GERAL ===== */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -21,7 +21,7 @@ header {
   text-align: center;
 }
 
-/* ====== PRODUTOS ====== */
+/* ===== PRODUTOS ===== */
 .produtos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
@@ -31,7 +31,7 @@ header {
 
 .produto {
   background: white;
-  padding: 8px;
+  padding: 10px;
   border-radius: 10px;
   text-align: center;
   font-size: 13px;
@@ -40,19 +40,31 @@ header {
 
 .produto img {
   width: 100%;
-  height: 120px;
+  height: 110px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-.produto button {
+.preco {
+  color: #8B4513;
+  font-weight: bold;
+}
+
+.controle-produto {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.controle-produto button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 6px;
   background: #8B4513;
   color: white;
-  border: none;
-  padding: 5px 8px;
-  margin-top: 5px;
-  border-radius: 6px;
-  font-size: 12px;
   cursor: pointer;
 }
 
@@ -67,18 +79,28 @@ header {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 22px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   z-index: 1000;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.carrinho-flutuante:hover {
-  transform: scale(1.1);
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* ====== MODAL ====== */
+/* ===== MODAL ===== */
 .modal {
   display: none;
   position: fixed;
@@ -97,7 +119,7 @@ header {
 .modal-conteudo {
   background: white;
   width: 320px;
-  height: 85%;
+  height: 80%;
   margin: auto 0;
   border-radius: 15px 0 0 15px;
   padding: 20px;
@@ -114,8 +136,8 @@ header {
 
 #listaCarrinho {
   flex: 1;
-  margin-top: 15px;
   overflow-y: auto;
+  margin-top: 10px;
 }
 
 .item-carrinho {
@@ -127,8 +149,8 @@ header {
 }
 
 .item-carrinho img {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -148,6 +170,7 @@ header {
   display: flex;
   gap: 5px;
   margin-top: 5px;
+  flex-wrap: wrap;
 }
 
 .controle-quantidade button {
@@ -162,12 +185,11 @@ header {
 
 .btn-remover {
   background: red;
-  color: white;
-  border: none;
-  padding: 4px 8px;
+  padding: 4px 6px;
+  font-size: 11px;
   border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
+  border: none;
+  color: white;
 }
 
 .btn-finalizar {
@@ -176,6 +198,14 @@ header {
   border: none;
   padding: 10px;
   border-radius: 8px;
+  margin-top: 10px;
+}
+
+.btn-voltar {
+  background: none;
+  border: none;
+  color: #8B4513;
+  font-weight: bold;
   margin-top: 10px;
   cursor: pointer;
 }
@@ -192,6 +222,7 @@ header {
 
 <button class="carrinho-flutuante" onclick="abrirCarrinho()">
   🛒
+  <div class="badge" id="contadorItens">0</div>
 </button>
 
 <div id="modalCarrinho" class="modal">
@@ -204,13 +235,15 @@ header {
 
     <div id="listaCarrinho"></div>
 
-    <h3 id="totalModal">Total: R$0,00</h3>
+    <h3 id="totalModal" class="preco">Total: R$0,00</h3>
 
     <button class="btn-finalizar" onclick="enviarPedido()">
       Finalizar no WhatsApp
     </button>
 
-    <button onclick="fecharCarrinho()">Fechar</button>
+    <button class="btn-voltar" onclick="fecharCarrinho()">
+      Voltar
+    </button>
   </div>
 </div>
 
@@ -243,11 +276,24 @@ produtos.forEach((produto, index) => {
     <div class="produto">
       <img src="${produto.imagem}">
       <h3>${produto.nome}</h3>
-      <p>R$ ${produto.preco.toFixed(2).replace('.', ',')}</p>
-      <button onclick="aumentarQuantidade(${index})">Adicionar</button>
+      <p class="preco">R$ ${produto.preco.toFixed(2).replace('.', ',')}</p>
+      <div class="controle-produto">
+        <button onclick="diminuirQuantidade(${index})">-</button>
+        <span id="qtd-${index}">0</span>
+        <button onclick="aumentarQuantidade(${index})">+</button>
+      </div>
     </div>
   `;
 });
+
+function atualizarContador() {
+  const totalItens = produtos.reduce((acc,p)=>acc+p.quantidade,0);
+  document.getElementById("contadorItens").textContent = totalItens;
+
+  produtos.forEach((p,i)=>{
+    document.getElementById(`qtd-${i}`).textContent = p.quantidade;
+  });
+}
 
 function abrirCarrinho() {
   document.getElementById("modalCarrinho").classList.add("ativo");
@@ -258,14 +304,9 @@ function fecharCarrinho() {
   document.getElementById("modalCarrinho").classList.remove("ativo");
 }
 
-document.getElementById("modalCarrinho").addEventListener("click", function(e) {
-  if (e.target === this) {
-    fecharCarrinho();
-  }
-});
-
 function aumentarQuantidade(index) {
   produtos[index].quantidade++;
+  atualizarContador();
   atualizarModal();
 }
 
@@ -273,11 +314,13 @@ function diminuirQuantidade(index) {
   if (produtos[index].quantidade > 0) {
     produtos[index].quantidade--;
   }
+  atualizarContador();
   atualizarModal();
 }
 
 function removerItem(index) {
   produtos[index].quantidade = 0;
+  atualizarContador();
   atualizarModal();
 }
 
@@ -289,50 +332,42 @@ function atualizarModal() {
     .map((p, index) => ({...p, index}))
     .filter(p => p.quantidade > 0);
 
-  if (selecionados.length === 0) {
-    container.innerHTML = "Seu carrinho está vazio.";
-  } else {
-    selecionados.forEach(p => {
-      const subtotal = p.quantidade * p.preco;
+  selecionados.forEach(p => {
+    const subtotal = p.quantidade * p.preco;
 
-      container.innerHTML += `
-        <div class="item-carrinho">
-          <img src="${p.imagem}">
-          <div class="item-info">
-            <strong>${p.quantidade}x ${p.nome}</strong>
-            R$ ${p.preco.toFixed(2).replace('.', ',')} cada
-            <div class="controle-quantidade">
-              <button onclick="diminuirQuantidade(${p.index})">-</button>
-              <button onclick="aumentarQuantidade(${p.index})">+</button>
-              <button class="btn-remover" onclick="removerItem(${p.index})">
-                Remover
-              </button>
-            </div>
-          </div>
-          <div class="subtotal">
-            R$ ${subtotal.toFixed(2).replace('.', ',')}
+    container.innerHTML += `
+      <div class="item-carrinho">
+        <img src="${p.imagem}">
+        <div class="item-info">
+          <strong>${p.quantidade}x ${p.nome}</strong>
+          <div class="controle-quantidade">
+            <button onclick="diminuirQuantidade(${p.index})">-</button>
+            <button onclick="aumentarQuantidade(${p.index})">+</button>
+            <button class="btn-remover" onclick="removerItem(${p.index})">
+              Remover
+            </button>
           </div>
         </div>
-      `;
-    });
-  }
+        <div class="subtotal">
+          R$ ${subtotal.toFixed(2).replace('.', ',')}
+        </div>
+      </div>
+    `;
+  });
 
-  const total = produtos.reduce((acc,p)=>acc + (p.quantidade*p.preco),0);
-
+  const total = produtos.reduce((acc,p)=>acc+(p.quantidade*p.preco),0);
   document.getElementById("totalModal").textContent =
     "Total: R$" + total.toFixed(2).replace('.', ',');
 }
 
 function enviarPedido() {
   const nome = document.getElementById("nomeCliente").value.trim();
-
   if (!nome) {
     alert("Digite seu nome antes de finalizar.");
     return;
   }
 
   const selecionados = produtos.filter(p => p.quantidade > 0);
-
   if (selecionados.length === 0) {
     alert("Carrinho vazio!");
     return;
@@ -342,15 +377,15 @@ function enviarPedido() {
     .map(p => `${p.quantidade}x ${p.nome}`)
     .join("%0A");
 
-  const total = produtos.reduce((acc,p)=>acc + (p.quantidade*p.preco),0);
+  const total = produtos.reduce((acc,p)=>acc+(p.quantidade*p.preco),0);
 
   const mensagem =
-    `Pedido Djo Bolachas:%0A%0ACliente: ${nome}%0A%0A${itens}%0A%0ATotal: R$${total.toFixed(2).replace('.', ',')}`;
+    `Pedido Djo Bolachas:%0A%0ACliente: ${nome}%0A%0A${itens}%0ATotal: R$${total.toFixed(2).replace('.', ',')}`;
 
-  const telefone = "5548992236978";
-
-  window.open(`https://wa.me/${telefone}?text=${mensagem}`, "_blank");
+  window.open(`https://wa.me/5548992236978?text=${mensagem}`, "_blank");
 }
+
+atualizarContador();
 
 </script>
 
