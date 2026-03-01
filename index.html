@@ -18,42 +18,63 @@ header {
   background: #8B4513;
   color: white;
   padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-button {
-  cursor: pointer;
+  text-align: center;
 }
 
 /* ====== PRODUTOS ====== */
 .produtos {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
-  gap: 15px;
-  padding: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
+  gap: 12px;
+  padding: 15px;
 }
 
 .produto {
   background: white;
-  padding: 10px;
+  padding: 8px;
   border-radius: 10px;
   text-align: center;
+  font-size: 13px;
 }
 
 .produto img {
   width: 100%;
-  border-radius: 10px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .produto button {
   background: #8B4513;
   color: white;
   border: none;
-  padding: 6px 10px;
+  padding: 5px 8px;
   margin-top: 5px;
   border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ===== CARRINHO FLUTUANTE ===== */
+.carrinho-flutuante {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #8B4513;
+  color: white;
+  border: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 24px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.carrinho-flutuante:hover {
+  transform: scale(1.1);
 }
 
 /* ====== MODAL ====== */
@@ -132,6 +153,7 @@ button {
   border-radius: 6px;
   background: #8B4513;
   color: white;
+  cursor: pointer;
 }
 
 .btn-remover {
@@ -141,6 +163,7 @@ button {
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .btn-finalizar {
@@ -150,6 +173,7 @@ button {
   padding: 10px;
   border-radius: 8px;
   margin-top: 10px;
+  cursor: pointer;
 }
 
 </style>
@@ -158,17 +182,22 @@ button {
 
 <header>
   <h1>Djo Bolachas</h1>
-  <button onclick="abrirCarrinho()">🛒 Carrinho</button>
 </header>
 
 <div class="produtos" id="listaProdutos"></div>
+
+<!-- BOTÃO FLUTUANTE -->
+<button class="carrinho-flutuante" onclick="abrirCarrinho()">
+  🛒
+</button>
 
 <!-- MODAL -->
 <div id="modalCarrinho" class="modal">
   <div class="modal-conteudo">
     <h2>Seu Carrinho</h2>
 
-    <input type="text" id="nomeCliente" placeholder="Digite seu nome"
+    <input type="text" id="nomeCliente"
+    placeholder="Digite seu nome"
     style="padding:8px; margin:10px 0; border-radius:8px; border:1px solid #ddd;">
 
     <div id="listaCarrinho"></div>
@@ -219,7 +248,8 @@ produtos.forEach((produto, index) => {
   `;
 });
 
-/* ====== CARRINHO ====== */
+/* ====== FUNÇÕES CARRINHO ====== */
+
 function abrirCarrinho() {
   document.getElementById("modalCarrinho").classList.add("ativo");
   atualizarModal();
