@@ -21,49 +21,57 @@ header{
 
 .produtos{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
-  gap:12px;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:14px;
   padding:15px;
 }
 
 .produto{
   background:white;
-  padding:10px;
-  border-radius:10px;
+  padding:12px;
+  border-radius:12px;
   text-align:center;
-  font-size:13px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  font-size:14px;
+  box-shadow:0 3px 8px rgba(0,0,0,0.08);
+  transition:0.2s;
 }
 
+.produto:hover{
+  transform:translateY(-3px);
+}
+
+/* 🔥 IMAGEM PROFISSIONAL QUADRADA */
 .produto img{
   width:100%;
-  height:110px;
+  aspect-ratio:1/1;
   object-fit:cover;
-  border-radius:8px;
+  border-radius:10px;
   cursor:pointer;
 }
 
 .preco{
   color:#8B4513;
   font-weight:bold;
+  margin-top:5px;
 }
 
 .controle-produto{
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:6px;
-  margin-top:5px;
+  gap:8px;
+  margin-top:6px;
 }
 
 .controle-produto button{
-  width:25px;
-  height:25px;
+  width:28px;
+  height:28px;
   border:none;
   border-radius:6px;
   background:#8B4513;
   color:white;
   cursor:pointer;
+  font-weight:bold;
 }
 
 .carrinho-flutuante{
@@ -73,10 +81,10 @@ header{
   background:#8B4513;
   color:white;
   border:none;
-  width:60px;
-  height:60px;
+  width:65px;
+  height:65px;
   border-radius:50%;
-  font-size:22px;
+  font-size:24px;
   box-shadow:0 4px 10px rgba(0,0,0,0.3);
   cursor:pointer;
   z-index:1000;
@@ -88,9 +96,9 @@ header{
   right:-5px;
   background:red;
   color:white;
-  font-size:12px;
-  width:20px;
-  height:20px;
+  font-size:13px;
+  width:22px;
+  height:22px;
   border-radius:50%;
   display:flex;
   justify-content:center;
@@ -104,7 +112,7 @@ header{
   right:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.3);
+  background:rgba(0,0,0,0.4);
   justify-content:flex-end;
 }
 
@@ -114,10 +122,10 @@ header{
 
 .modal-conteudo{
   background:white;
-  width:320px;
+  width:340px;
   height:80%;
   margin:auto 0;
-  border-radius:15px 0 0 15px;
+  border-radius:18px 0 0 18px;
   padding:20px;
   display:flex;
   flex-direction:column;
@@ -139,29 +147,29 @@ header{
 }
 
 .item-carrinho img{
-  width:45px;
-  height:45px;
+  width:50px;
+  height:50px;
   object-fit:cover;
   border-radius:8px;
 }
 
-.item-info{ flex:1; font-size:13px; }
+.item-info{ flex:1; font-size:14px; }
 
 .subtotal{
   font-weight:bold;
   color:#8B4513;
-  font-size:13px;
+  font-size:14px;
 }
 
 .controle-quantidade{
   display:flex;
-  gap:5px;
-  margin-top:5px;
+  gap:6px;
+  margin-top:4px;
 }
 
 .controle-quantidade button{
-  width:25px;
-  height:25px;
+  width:26px;
+  height:26px;
   border:none;
   border-radius:6px;
   background:#8B4513;
@@ -181,10 +189,11 @@ header{
   background:green;
   color:white;
   border:none;
-  padding:10px;
-  border-radius:8px;
+  padding:12px;
+  border-radius:10px;
   margin-top:10px;
   cursor:pointer;
+  font-size:15px;
 }
 
 .btn-voltar{
@@ -194,6 +203,7 @@ header{
   font-weight:bold;
   margin-top:10px;
   cursor:pointer;
+  font-size:14px;
 }
 
 /* MODAL IMAGEM */
@@ -204,7 +214,7 @@ header{
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.8);
+  background:rgba(0,0,0,0.85);
   justify-content:center;
   align-items:center;
   z-index:2000;
@@ -213,7 +223,7 @@ header{
 .modal-imagem img{
   max-width:90%;
   max-height:90%;
-  border-radius:10px;
+  border-radius:12px;
 }
 </style>
 </head>
@@ -236,7 +246,7 @@ header{
 
 <input type="text" id="nomeCliente"
 placeholder="Digite seu nome"
-style="padding:8px; margin:10px 0; border-radius:8px; border:1px solid #ddd;">
+style="padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ddd;">
 
 <div id="listaCarrinho"></div>
 
@@ -257,7 +267,6 @@ Voltar
 </div>
 
 <script>
-
 const telefone="5548992236978";
 
 let produtos=[
@@ -286,11 +295,8 @@ localStorage.setItem("carrinho",JSON.stringify(produtos));
 
 function carregarCarrinho(){
 const dados=localStorage.getItem("carrinho");
-if(dados){
-produtos=JSON.parse(dados);
+if(dados){produtos=JSON.parse(dados);}
 }
-}
-
 carregarCarrinho();
 
 const listaProdutos=document.getElementById("listaProdutos");
@@ -334,9 +340,7 @@ atualizarModal();
 }
 
 function diminuirQuantidade(i){
-if(produtos[i].quantidade>0){
-produtos[i].quantidade--;
-}
+if(produtos[i].quantidade>0){produtos[i].quantidade--;}
 atualizarContador();
 atualizarModal();
 }
@@ -377,9 +381,9 @@ document.getElementById("totalModal").textContent="Total: R$"+total.toFixed(2).r
 
 function enviarPedido(){
 const nome=document.getElementById("nomeCliente").value.trim();
-if(!nome){ alert("Digite seu nome."); return; }
+if(!nome){alert("Digite seu nome.");return;}
 const selecionados=produtos.filter(p=>p.quantidade>0);
-if(selecionados.length===0){ alert("Carrinho vazio!"); return; }
+if(selecionados.length===0){alert("Carrinho vazio!");return;}
 let mensagem="🍪 Pedido Djo Bolachas 🍪\n\nCliente: "+nome+"\n\n";
 let total=0;
 selecionados.forEach(p=>{
@@ -401,7 +405,6 @@ document.getElementById("modalImagem").style.display="none";
 }
 
 atualizarContador();
-
 </script>
 
 </body>
