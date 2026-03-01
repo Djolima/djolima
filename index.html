@@ -1,214 +1,193 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Djo Bolachas</title>
 
 <style>
+
+/* ====== GERAL ====== */
 body {
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
-  background: linear-gradient(to bottom, #fffaf5, #f5e6d8);
+  background: #f8f5f2;
 }
 
-/* TOPO */
-.topo {
-  text-align: center;
-  padding: 20px 10px;
-}
-
-.logo {
-  width: 140px;
-}
-
-h1 {
-  margin: 10px 0 0;
-  color: #8B4513;
-}
-
-/* GRID */
-#produtos {
+header {
+  background: #8B4513;
+  color: white;
   padding: 15px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* CARD */
+button {
+  cursor: pointer;
+}
+
+/* ====== PRODUTOS ====== */
+.produtos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
 .produto {
   background: white;
-  border-radius: 15px;
-  padding: 12px;
-  position: relative;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
 }
 
 .produto img {
   width: 100%;
-  height: 140px;
-  object-fit: cover;
   border-radius: 10px;
 }
 
-.selo {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: #ff9800;
+.produto button {
+  background: #8B4513;
   color: white;
-  padding: 4px 8px;
-  font-size: 11px;
-  border-radius: 8px;
-  font-weight: bold;
-}
-
-.nome-produto {
-  font-weight: 600;
-  margin-top: 8px;
-  font-size: 14px;
-}
-
-.preco-produto {
-  font-weight: bold;
-  color: #8B4513;
-  margin: 5px 0 10px;
-}
-
-.quantidade {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
-
-.quantidade button {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
   border: none;
-  background: #8B4513;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
+  padding: 6px 10px;
+  margin-top: 5px;
+  border-radius: 6px;
 }
 
-.quantidade span {
-  font-weight: bold;
-}
-
-/* CARRINHO FIXO */
-.carrinho-fixo {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #8B4513;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 50px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-}
-
-.carrinho-fixo.animar {
-  transform: scale(1.1);
-  transition: transform 0.2s;
-}
-
-/* MODAL */
+/* ====== MODAL ====== */
 .modal {
+  display: none;
   position: fixed;
   top: 0;
-  right: -100%;
+  right: 0;
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(4px);
-  transition: right 0.3s ease;
-  z-index: 999;
-  display: flex;
   justify-content: flex-end;
 }
 
 .modal.ativo {
-  right: 0;
+  display: flex;
 }
 
 .modal-conteudo {
   background: white;
-  width: 90%;
-  max-width: 380px;
+  width: 350px;
   height: 100%;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+  animation: slideIn 0.3s ease forwards;
 }
 
-.fechar {
-  font-size: 24px;
-  cursor: pointer;
-  align-self: flex-end;
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }
 
 #listaCarrinho {
   flex: 1;
   margin-top: 15px;
-  white-space: pre-line;
-  font-size: 14px;
+  overflow-y: auto;
 }
 
-#totalModal {
-  margin-top: 10px;
-  font-size: 18px;
+.item-carrinho {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.item-carrinho img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-info {
+  flex: 1;
+  font-size: 13px;
+}
+
+.subtotal {
   font-weight: bold;
   color: #8B4513;
+  font-size: 13px;
+}
+
+.controle-quantidade {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.controle-quantidade button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 6px;
+  background: #8B4513;
+  color: white;
+}
+
+.btn-remover {
+  background: red;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
 }
 
 .btn-finalizar {
-  margin-top: 15px;
-  background: #228B22;
+  background: green;
   color: white;
   border: none;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 15px;
-  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
 }
+
 </style>
 </head>
-
 <body>
 
-<div class="topo">
-  <img src="imagens/logo.png" class="logo">
+<header>
   <h1>Djo Bolachas</h1>
-</div>
+  <button onclick="abrirCarrinho()">🛒 Carrinho</button>
+</header>
 
-<div id="produtos"></div>
+<div class="produtos" id="listaProdutos"></div>
 
-<div class="carrinho-fixo" id="carrinho" onclick="abrirCarrinho()">
-🛒 0 itens
-</div>
-
+<!-- MODAL -->
 <div id="modalCarrinho" class="modal">
   <div class="modal-conteudo">
-    <span class="fechar" onclick="fecharCarrinho()">×</span>
     <h2>Seu Carrinho</h2>
+
+    <input type="text" id="nomeCliente" placeholder="Digite seu nome"
+    style="padding:8px; margin:10px 0; border-radius:8px; border:1px solid #ddd;">
+
     <div id="listaCarrinho"></div>
+
     <h3 id="totalModal">Total: R$0,00</h3>
+
     <button class="btn-finalizar" onclick="enviarPedido()">
-      Finalizar pedido no WhatsApp
+      Finalizar no WhatsApp
     </button>
+
+    <button onclick="fecharCarrinho()">Fechar</button>
   </div>
 </div>
 
 <script>
+
+/* ====== PRODUTOS ====== */
 const produtos = [
- { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "pascoa.jpeg", destaque: true },
+   { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "pascoa.jpeg", destaque: true },
   { nome: "Pão", preco: 15, quantidade: 0, imagem: "imagens/pao.jpg" },
   { nome: "Polvilho 200g", preco: 13, quantidade: 0, imagem: "imagens/polvilho.jpg" },
   { nome: "Laranja 250g", preco: 13, quantidade: 0, imagem: "imagens/laranja.jpg" },
@@ -227,86 +206,125 @@ const produtos = [
   { nome: "Bolacha sortida 400g", preco: 20, quantidade: 0, imagem: "sortida.jpeg", destaque: true }
 ];
 
-const container = document.getElementById("produtos");
+const listaProdutos = document.getElementById("listaProdutos");
 
-produtos.forEach((p, i) => {
-  const div = document.createElement("div");
-  div.className = "produto";
-
-  div.innerHTML = `
-    ${p.destaque ? '<div class="selo">⭐ Mais vendido</div>' : ''}
-    <img src="${p.imagem}" alt="${p.nome}">
-    <div class="nome-produto">${p.nome}</div>
-    <div class="preco-produto">R$ ${p.preco.toFixed(2).replace('.', ',')}</div>
-    <div class="quantidade">
-      <button onclick="alterarQuantidade(${i}, -1)">-</button>
-      <span id="qtd-${i}">0</span>
-      <button onclick="alterarQuantidade(${i}, 1)">+</button>
+produtos.forEach((produto, index) => {
+  listaProdutos.innerHTML += `
+    <div class="produto">
+      <img src="${produto.imagem}">
+      <h3>${produto.nome}</h3>
+      <p>R$ ${produto.preco.toFixed(2).replace('.', ',')}</p>
+      <button onclick="aumentarQuantidade(${index})">Adicionar</button>
     </div>
   `;
-
-  container.appendChild(div);
 });
 
-function alterarQuantidade(index, delta) {
-  const produto = produtos[index];
-  produto.quantidade = Math.max(0, produto.quantidade + delta);
-  document.getElementById(`qtd-${index}`).textContent = produto.quantidade;
-  atualizarCarrinho();
-
-  const carrinho = document.getElementById("carrinho");
-  carrinho.classList.add("animar");
-  setTimeout(() => carrinho.classList.remove("animar"), 200);
-}
-
-function atualizarCarrinho() {
-  const totalItens = produtos.reduce((acc, p) => acc + p.quantidade, 0);
-  document.getElementById("carrinho").textContent = `🛒 ${totalItens} item(s)`;
-}
-
+/* ====== CARRINHO ====== */
 function abrirCarrinho() {
-  atualizarModal();
   document.getElementById("modalCarrinho").classList.add("ativo");
+  atualizarModal();
 }
 
 function fecharCarrinho() {
+  const nome = document.getElementById("nomeCliente").value.trim();
+  if (!nome) {
+    alert("Digite seu nome antes de fechar.");
+    return;
+  }
   document.getElementById("modalCarrinho").classList.remove("ativo");
 }
 
+function aumentarQuantidade(index) {
+  produtos[index].quantidade++;
+  atualizarModal();
+}
+
+function diminuirQuantidade(index) {
+  if (produtos[index].quantidade > 0) {
+    produtos[index].quantidade--;
+  }
+  atualizarModal();
+}
+
+function removerItem(index) {
+  produtos[index].quantidade = 0;
+  atualizarModal();
+}
+
 function atualizarModal() {
-  const lista = produtos
-    .filter(p => p.quantidade > 0)
-    .map(p => `${p.nome} x${p.quantidade}`)
-    .join("\n");
+  const container = document.getElementById("listaCarrinho");
+  container.innerHTML = "";
 
-  document.getElementById("listaCarrinho").textContent =
-    lista || "Seu carrinho está vazio.";
+  const selecionados = produtos
+    .map((p, index) => ({...p, index}))
+    .filter(p => p.quantidade > 0);
 
-  const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
+  if (selecionados.length === 0) {
+    container.innerHTML = "Seu carrinho está vazio.";
+  } else {
+    selecionados.forEach(p => {
+
+      const subtotal = p.quantidade * p.preco;
+
+      container.innerHTML += `
+        <div class="item-carrinho">
+          <img src="${p.imagem}">
+          <div class="item-info">
+            <strong>${p.quantidade}x ${p.nome}</strong>
+            R$ ${p.preco.toFixed(2).replace('.', ',')} cada
+
+            <div class="controle-quantidade">
+              <button onclick="diminuirQuantidade(${p.index})">-</button>
+              <button onclick="aumentarQuantidade(${p.index})">+</button>
+              <button class="btn-remover" onclick="removerItem(${p.index})">
+                Remover
+              </button>
+            </div>
+          </div>
+          <div class="subtotal">
+            R$ ${subtotal.toFixed(2).replace('.', ',')}
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  const total = produtos.reduce((acc,p)=>acc + (p.quantidade*p.preco),0);
 
   document.getElementById("totalModal").textContent =
     "Total: R$" + total.toFixed(2).replace('.', ',');
 }
 
 function enviarPedido() {
-  const itens = produtos
-    .filter(p => p.quantidade > 0)
-    .map(p => `${p.nome} x${p.quantidade}`)
-    .join("%0A");
 
-  if (!itens) {
+  const nome = document.getElementById("nomeCliente").value.trim();
+
+  if (!nome) {
+    alert("Digite seu nome antes de finalizar.");
+    return;
+  }
+
+  const selecionados = produtos.filter(p => p.quantidade > 0);
+
+  if (selecionados.length === 0) {
     alert("Carrinho vazio!");
     return;
   }
 
-  const total = produtos.reduce((acc, p) => acc + (p.quantidade * p.preco), 0);
+  const itens = selecionados
+    .map(p => `${p.quantidade}x ${p.nome}`)
+    .join("%0A");
 
-  const mensagem = `Pedido para Djo Bolachas:%0A%0A${itens}%0A%0ATotal: R$${total.toFixed(2).replace('.', ',')}`;
+  const total = produtos.reduce((acc,p)=>acc + (p.quantidade*p.preco),0);
+
+  const mensagem =
+    `Pedido Djo Bolachas:%0A%0ACliente: ${nome}%0A%0A${itens}%0A%0ATotal: R$${total.toFixed(2).replace('.', ',')}`;
+
   const telefone = "5548992236978";
 
   window.open(`https://wa.me/${telefone}?text=${mensagem}`, "_blank");
 }
-</script>
 
+</script>
 </body>
 </html>
