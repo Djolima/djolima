@@ -14,7 +14,7 @@ body {
   color: #333;
 }
 
-/* LOGO */
+/* TOPO */
 .topo {
   text-align: center;
   margin-bottom: 20px;
@@ -34,7 +34,7 @@ h1 {
 h2 {
   text-align: center;
   color: #A0522D;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 /* GRID */
@@ -74,24 +74,24 @@ h2 {
 /* SELO */
 .selo {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 8px;
+  left: 8px;
   background: #ff9800;
   color: white;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 11px;
   border-radius: 8px;
   font-weight: bold;
 }
 
 .nome-produto {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   margin-top: 8px;
 }
 
 .preco-produto {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   color: #8B4513;
   margin: 5px 0 10px 0;
@@ -101,12 +101,12 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .quantidade button {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: none;
   background: #8B4513;
@@ -116,7 +116,7 @@ h2 {
 }
 
 .quantidade span {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -168,14 +168,12 @@ button.enviar {
   font-weight: bold;
   box-shadow: 0 6px 15px rgba(0,0,0,0.3);
 }
-
 </style>
 </head>
 
 <body>
 
 <div class="topo">
-  <!-- Coloque sua logo dentro da pasta imagens e nomeie como logo.png -->
   <img src="imagens/logo.png" class="logo" alt="Logo Djo Bolachas">
   <h1>Djo Bolachas</h1>
 </div>
@@ -201,8 +199,20 @@ button.enviar {
 const produtos = [
   { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "imagens/pascoa.jpg", destaque: true },
   { nome: "Pão", preco: 15, quantidade: 0, imagem: "imagens/pao.jpg" },
+  { nome: "Polvilho 200g", preco: 13, quantidade: 0, imagem: "imagens/polvilho.jpg" },
+  { nome: "Laranja 250g", preco: 13, quantidade: 0, imagem: "imagens/laranja.jpg" },
   { nome: "Cookies 250g", preco: 13, quantidade: 0, imagem: "imagens/cookies.jpg", destaque: true },
+  { nome: "Amendoim 250g", preco: 13, quantidade: 0, imagem: "imagens/amendoim.jpg" },
+  { nome: "Milho 200g", preco: 13, quantidade: 0, imagem: "imagens/milho200.jpg" },
   { nome: "Milho 400g", preco: 20, quantidade: 0, imagem: "imagens/milho400.jpg" },
+  { nome: "Coco 400g", preco: 18, quantidade: 0, imagem: "imagens/coco.jpg" },
+  { nome: "Natal 250g", preco: 18, quantidade: 0, imagem: "imagens/natal.jpg" },
+  { nome: "Cristal 400g", preco: 18, quantidade: 0, imagem: "imagens/cristal.jpg" },
+  { nome: "Goiaba 290g", preco: 18, quantidade: 0, imagem: "imagens/goiaba.jpg" },
+  { nome: "Manteiga 400g", preco: 18, quantidade: 0, imagem: "imagens/manteiga.jpg" },
+  { nome: "Doce de leite 290g", preco: 18, quantidade: 0, imagem: "imagens/docedeleite.jpg" },
+  { nome: "Bolacha da vovó 400g", preco: 18, quantidade: 0, imagem: "imagens/vovo.jpg" },
+  { nome: "Palito de chocolate 290g", preco: 18, quantidade: 0, imagem: "imagens/palito.jpg" },
   { nome: "Bolacha sortida 400g", preco: 20, quantidade: 0, imagem: "imagens/sortida.jpg", destaque: true }
 ];
 
@@ -211,6 +221,7 @@ const container = document.getElementById("produtos");
 produtos.forEach((p, i) => {
   const div = document.createElement("div");
   div.className = "produto";
+
   div.innerHTML = `
     ${p.destaque ? '<div class="selo">⭐ Mais vendido</div>' : ''}
     <div class="info-produto">
@@ -224,6 +235,7 @@ produtos.forEach((p, i) => {
       <button onclick="alterarQuantidade(${i}, 1)">+</button>
     </div>
   `;
+
   container.appendChild(div);
 });
 
@@ -236,6 +248,7 @@ function alterarQuantidade(index, delta) {
 
 function atualizarPedido() {
   const textarea = document.getElementById("pedido");
+
   const resumo = produtos
     .filter(p => p.quantidade > 0)
     .map(p => `- ${p.nome} x${p.quantidade}`)
