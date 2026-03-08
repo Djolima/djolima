@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Evitar cache do navegador -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
 <title>Djo Bolachas</title>
 
 <style>
@@ -40,7 +46,6 @@ header{
   transform:translateY(-3px);
 }
 
-/* 🔥 IMAGEM PROFISSIONAL QUADRADA */
 .produto img{
   width:100%;
   aspect-ratio:1/1;
@@ -206,7 +211,6 @@ header{
   font-size:14px;
 }
 
-/* MODAL IMAGEM */
 .modal-imagem{
   display:none;
   position:fixed;
@@ -227,6 +231,7 @@ header{
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -267,27 +272,28 @@ Voltar
 </div>
 
 <script>
+
 const telefone="5548992236978";
 
 let produtos=[
-  { nome: "Especial Páscoa", preco: 25, quantidade: 0, imagem: "pascoa.jpeg", destaque: true },
-  { nome: "Páscoa decorado", preco: 12, quantidade: 0, imagem: "IMG-20260306-WA0019.jpg" },
-  { nome: "Pão", preco: 15, quantidade: 0, imagem: "pao.jpeg" },
-  { nome: "Polvilho 200g", preco: 13, quantidade: 0, imagem: "polvilho.png" },
-  { nome: "Laranja 250g", preco: 13, quantidade: 0, imagem: "laranja.png" },
-  { nome: "Cookies 250g", preco: 13, quantidade: 0, imagem: "cookies.jpeg", destaque: true },
-  { nome: "Amendoim 250g", preco: 13, quantidade: 0, imagem: "amendoim.jpeg" },
-  { nome: "Milho 200g", preco: 13, quantidade: 0, imagem: "IMG-20260306-WA0016.jpg" },
-  { nome: "Milho 400g", preco: 20, quantidade: 0, imagem: "milho.png" },
-  { nome: "Coco 400g", preco: 18, quantidade: 0, imagem: "Coco.jpg" },
-  { nome: "Natal 250g", preco: 18, quantidade: 0, imagem: "natal.png" },
-  { nome: "Cristal 400g", preco: 18, quantidade: 0, imagem: "cristal.jpeg" },
-  { nome: "Goiaba 290g", preco: 18, quantidade: 0, imagem: "goiaba.png" },
-  { nome: "Manteiga 400g", preco: 18, quantidade: 0, imagem: "manteiga.jpeg" },
-  { nome: "Doce de leite 290g", preco: 18, quantidade: 0, imagem: "doce de leite.png" },
-  { nome: "Bolacha da vovó 400g", preco: 18, quantidade: 0, imagem: "IMG-20260306-WA0015.jpg" },
-  { nome: "Palito de chocolate 290g", preco: 18, quantidade: 0, imagem: "palito chocolate.jpeg" },
-  { nome: "Bolacha sortida 400g", preco: 23, quantidade: 0, imagem: "sortida.jpeg", destaque: true }
+{ nome:"Especial Páscoa",preco:25,quantidade:0,imagem:"pascoa.jpeg",destaque:true },
+{ nome:"Páscoa decorado",preco:12,quantidade:0,imagem:"IMG-20260306-WA0019.jpg" },
+{ nome:"Pão",preco:15,quantidade:0,imagem:"pao.jpeg" },
+{ nome:"Polvilho 200g",preco:13,quantidade:0,imagem:"polvilho.png" },
+{ nome:"Laranja 250g",preco:13,quantidade:0,imagem:"laranja.png" },
+{ nome:"Cookies 250g",preco:13,quantidade:0,imagem:"cookies.jpeg",destaque:true },
+{ nome:"Amendoim 250g",preco:13,quantidade:0,imagem:"amendoim.jpeg" },
+{ nome:"Milho 200g",preco:13,quantidade:0,imagem:"IMG-20260306-WA0016.jpg" },
+{ nome:"Milho 400g",preco:20,quantidade:0,imagem:"milho.png" },
+{ nome:"Coco 400g",preco:18,quantidade:0,imagem:"Coco.jpg" },
+{ nome:"Natal 250g",preco:18,quantidade:0,imagem:"natal.png" },
+{ nome:"Cristal 400g",preco:18,quantidade:0,imagem:"cristal.jpeg" },
+{ nome:"Goiaba 290g",preco:18,quantidade:0,imagem:"goiaba.png" },
+{ nome:"Manteiga 400g",preco:18,quantidade:0,imagem:"manteiga.jpeg" },
+{ nome:"Doce de leite 290g",preco:18,quantidade:0,imagem:"doce de leite.png" },
+{ nome:"Bolacha da vovó 400g",preco:18,quantidade:0,imagem:"IMG-20260306-WA0015.jpg" },
+{ nome:"Palito de chocolate 290g",preco:18,quantidade:0,imagem:"palito chocolate.jpeg" },
+{ nome:"Bolacha sortida 400g",preco:23,quantidade:0,imagem:"sortida.jpeg",destaque:true }
 ];
 
 function salvarCarrinho(){
@@ -406,6 +412,7 @@ document.getElementById("modalImagem").style.display="none";
 }
 
 atualizarContador();
+
 </script>
 
 </body>
