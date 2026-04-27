@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,604 +10,321 @@
 <meta http-equiv="Expires" content="0">
 
 <title>Djo Bolachas</title>
-
+  
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+body{font-family:Arial;margin:0;background:#f8f5f2;}
 
-body{
-  font-family:Arial, sans-serif;
-  background:#f8f5f2;
-  color:#333;
-}
+header{background:#8B4513;color:white;padding:15px;text-align:center;}
 
-/* TOPO */
-header{
-  background:#8B4513;
-  color:white;
-  padding:18px;
-  text-align:center;
-}
-
-header h1{
-  font-size:28px;
-}
-
-/* PRODUTOS */
 .produtos{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-  gap:14px;
-  padding:15px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+gap:14px;padding:15px;
 }
 
 .produto{
-  background:white;
-  padding:12px;
-  border-radius:12px;
-  text-align:center;
-  font-size:14px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.08);
-  transition:.2s;
-}
-
-.produto:hover{
-  transform:translateY(-3px);
+background:white;padding:12px;border-radius:12px;
+text-align:center;font-size:14px;
+box-shadow:0 3px 8px rgba(0,0,0,0.08);
 }
 
 .produto img{
-  width:100%;
-  aspect-ratio:1/1;
-  object-fit:cover;
-  border-radius:10px;
-  cursor:pointer;
+width:100%;aspect-ratio:1/1;
+object-fit:cover;border-radius:10px;cursor:pointer;
 }
 
-.produto h3{
-  font-size:15px;
-  margin-top:8px;
-}
-
-.preco{
-  color:#8B4513;
-  font-weight:bold;
-  margin-top:5px;
-}
+.preco{color:#8B4513;font-weight:bold;margin-top:5px;}
 
 .controle-produto{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:8px;
-  margin-top:8px;
+display:flex;justify-content:center;gap:8px;margin-top:6px;
 }
 
 .controle-produto button{
-  width:30px;
-  height:30px;
-  border:none;
-  border-radius:6px;
-  background:#8B4513;
-  color:white;
-  cursor:pointer;
-  font-size:16px;
-  font-weight:bold;
+width:28px;height:28px;border:none;border-radius:6px;
+background:#8B4513;color:white;cursor:pointer;
 }
 
-.controle-produto span{
-  min-width:20px;
-  font-weight:bold;
-}
-
-/* CARRINHO FLUTUANTE */
 .carrinho-flutuante{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  width:65px;
-  height:65px;
-  border:none;
-  border-radius:50%;
-  background:#8B4513;
-  color:white;
-  font-size:24px;
-  cursor:pointer;
-  z-index:1000;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
-  box-shadow:0 4px 10px rgba(0,0,0,0.25);
+position:fixed;bottom:20px;right:20px;
+background:#8B4513;color:white;
+width:65px;height:65px;border-radius:50%;
+font-size:24px;cursor:pointer;
 }
 
 .badge{
-  position:absolute;
-  top:-5px;
-  right:-5px;
-  width:24px;
-  height:24px;
-  border-radius:50%;
-  background:red;
-  color:white;
-  font-size:13px;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
+position:absolute;top:-5px;right:-5px;
+background:red;color:white;font-size:13px;
+width:22px;height:22px;border-radius:50%;
+display:flex;justify-content:center;align-items:center;
 }
 
-/* MODAL CARRINHO */
 .modal{
-  display:none;
-  position:fixed;
-  top:0;
-  right:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.45);
-  justify-content:flex-end;
-  z-index:999;
+display:none;position:fixed;top:0;right:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.4);
+justify-content:flex-end;
 }
 
-.modal.ativo{
-  display:flex;
-}
+.modal.ativo{display:flex;}
 
 .modal-conteudo{
-  background:white;
-  width:340px;
-  max-width:100%;
-  height:80%;
-  margin:auto 0;
-  border-radius:18px 0 0 18px;
-  padding:20px;
-
-  display:flex;
-  flex-direction:column;
+background:white;width:340px;height:80%;
+margin:auto 0;border-radius:18px 0 0 18px;
+padding:20px;display:flex;flex-direction:column;
 }
 
-.modal-conteudo h2{
-  color:#8B4513;
-  margin-bottom:10px;
-}
-
-#nomeCliente{
-  width:100%;
-  padding:12px;
-  border:1px solid #ddd;
-  border-radius:8px;
-  margin-bottom:12px;
-  font-size:14px;
-}
-
-#listaCarrinho{
-  flex:1;
-  overflow-y:auto;
-}
-
-/* ITEM CARRINHO */
 .item-carrinho{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  border-bottom:1px solid #eee;
-  padding:10px 0;
+display:flex;align-items:center;gap:10px;
+border-bottom:1px solid #eee;padding:8px 0;
 }
 
 .item-carrinho img{
-  width:50px;
-  height:50px;
-  border-radius:8px;
-  object-fit:cover;
+width:50px;height:50px;border-radius:8px;
+object-fit:cover;
 }
 
-.item-info{
-  flex:1;
-  font-size:14px;
-}
+.item-info{flex:1;}
 
-.item-info strong{
-  display:block;
-}
-
-.controle-quantidade{
-  display:flex;
-  gap:5px;
-  margin-top:6px;
-}
+.controle-quantidade{display:flex;gap:5px;margin-top:4px;}
 
 .controle-quantidade button{
-  width:26px;
-  height:26px;
-  border:none;
-  border-radius:6px;
-  background:#8B4513;
-  color:white;
-  cursor:pointer;
-}
-
-.subtotal{
-  font-size:14px;
-  font-weight:bold;
-  color:#8B4513;
+width:26px;height:26px;background:#8B4513;
+color:white;border:none;border-radius:6px;
 }
 
 .btn-remover{
-  margin-left:auto;
-  border:none;
-  background:none;
-  font-size:20px;
-  cursor:pointer;
+margin-left:auto;font-size:18px;
+background:none;border:none;cursor:pointer;
 }
 
-/* BOTÕES */
 .btn-finalizar{
-  background:green;
-  color:white;
-  border:none;
-  padding:12px;
-  border-radius:10px;
-  margin-top:12px;
-  cursor:pointer;
-  font-size:15px;
+background:green;color:white;border:none;
+padding:12px;border-radius:10px;margin-top:10px;
 }
 
 .btn-voltar{
-  background:none;
-  border:none;
-  color:#8B4513;
-  font-weight:bold;
-  margin-top:10px;
-  cursor:pointer;
-  font-size:14px;
+background:none;border:none;
+color:#8B4513;font-weight:bold;margin-top:10px;
+cursor:pointer;
 }
 
-/* MODAL IMAGEM */
 .modal-imagem{
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.85);
-  justify-content:center;
-  align-items:center;
-  z-index:2000;
+display:none;position:fixed;
+top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.85);
+justify-content:center;align-items:center;
 }
 
 .modal-imagem img{
-  max-width:90%;
-  max-height:90%;
-  border-radius:12px;
+max-width:90%;max-height:90%;
 }
 </style>
 </head>
+
 <body>
 
-<header>
-  <h1>Djo Bolachas</h1>
-</header>
+<header><h1>Djo Bolachas</h1></header>
 
 <div class="produtos" id="listaProdutos"></div>
 
-<!-- CARRINHO -->
 <button class="carrinho-flutuante" onclick="abrirCarrinho()">
-  <span>🛒</span>
-  <span class="badge" id="contadorItens">0</span>
+🛒<div class="badge" id="contadorItens">0</div>
 </button>
 
-<!-- MODAL CARRINHO -->
 <div id="modalCarrinho" class="modal">
-  <div class="modal-conteudo">
+<div class="modal-conteudo">
 
-    <h2>Seu Carrinho</h2>
+<h2>Seu Carrinho</h2>
 
-    <input
-      type="text"
-      id="nomeCliente"
-      placeholder="Digite seu nome"
-    >
+<input type="text" id="nomeCliente" placeholder="Digite seu nome">
 
-    <div id="listaCarrinho"></div>
+<div id="listaCarrinho"></div>
 
-    <h3 id="totalModal" class="preco">
-      Total: R$ 0,00
-    </h3>
+<h3 id="totalModal">Total: R$0,00</h3>
 
-    <button class="btn-finalizar" onclick="enviarPedido()">
-      Finalizar no WhatsApp
-    </button>
+<button class="btn-finalizar" onclick="enviarPedido()">
+Finalizar no WhatsApp
+</button>
 
-    <button class="btn-voltar" onclick="fecharCarrinho()">
-      Voltar
-    </button>
+<button class="btn-voltar" onclick="fecharCarrinho()">
+Voltar
+</button>
 
-  </div>
+</div>
 </div>
 
-<!-- MODAL IMAGEM -->
-<div
-  id="modalImagem"
-  class="modal-imagem"
-  onclick="fecharImagem()"
->
-  <img id="imagemGrande">
+<div id="modalImagem" class="modal-imagem" onclick="fecharImagem()">
+<img id="imagemGrande">
 </div>
 
 <script>
-const telefone = "5548992236978";
 
-/*
-IMPORTANTE:
-- sem espaço
-- sem acento
-- tudo minúsculo
-*/
+const telefone="5548992236978";
 
-let produtos = [
-  { nome:"Especial Mães",preco:25,quantidade:0,imagem:"file_00000000ed80720eba5fcf33a37c2978.png" },
-  { nome:"Mães Decorado",preco:12,quantidade:0,imagem:"file_00000000ae4c720ea6c52a8276a824ca.png" },
-  { nome:"Pao", preco:15, quantidade:0, imagem:"pao.jpeg" },
-  { nome:"Polvilho 200g", preco:13, quantidade:0, imagem:"polvilho.png" },
-  { nome:"Laranja 250g", preco:13, quantidade:0, imagem:"laranja.png" },
-  { nome:"Cookies 250g", preco:13, quantidade:0, imagem:"cookies.jpeg" },
-  { nome:"Amendoim 250g", preco:13, quantidade:0, imagem:"amendoim.jpeg" },
-  { nome:"Milho 200g", preco:13, quantidade:0, imagem:"IMG-20260306-WA0016.jpg" " },
-  { nome:"Milho 400g", preco:20, quantidade:0, imagem:"milho.png" },
-  { nome:"Coco 400g", preco:18, quantidade:0, imagem:"Coco.jpg" },
-  { nome:"Natal 250g", preco:18, quantidade:0, imagem:"natal.png" },
-  { nome:"Cristal 400g", preco:18, quantidade:0, imagem:"cristal.jpeg" },
-  { nome:"Goiaba 290g", preco:18, quantidade:0, imagem:"goiaba.png" },
-  { nome:"Manteiga 400g", preco:18, quantidade:0, imagem:"manteiga.jpeg" },
-  { nome:"Doce de leite 290g", preco:18, quantidade:0, imagem:"doce de leite.png" },
-  { nome:"Bolacha da vovo 400g", preco:18, quantidade:0, imagem:"IMG-20260306-WA0015.jpg"" },
-  { nome:"Palito de chocolate 290g", preco:18, quantidade:0, imagem:"palito chocolate.jpeg" },
-  { nome:"Bolacha sortida 400g", preco:23, quantidade:0, imagem:"sortida.jpeg" }
+let produtos=[
+{ nome:"Especial Mães",preco:25,quantidade:0,imagem:"file_00000000ed80720eba5fcf33a37c2978.png" },
+{ nome:"Mães Decorado",preco:12,quantidade:0,imagem:"file_00000000ae4c720ea6c52a8276a824ca.png" },
+{ nome:"Pão",preco:15,quantidade:0,imagem:"pao.jpeg" },
+{ nome:"Polvilho 200g",preco:13,quantidade:0,imagem:"polvilho.png" },
+{ nome:"Laranja 250g",preco:13,quantidade:0,imagem:"laranja.png" },
+{ nome:"Cookies 250g",preco:13,quantidade:0,imagem:"cookies.jpeg",destaque:true },
+{ nome:"Amendoim 250g",preco:13,quantidade:0,imagem:"amendoim.jpeg" },
+{ nome:"Milho 200g",preco:13,quantidade:0,imagem:"IMG-20260306-WA0016.jpg" },
+{ nome:"Milho 400g",preco:20,quantidade:0,imagem:"milho.png" },
+{ nome:"Coco 400g",preco:18,quantidade:0,imagem:"Coco.jpg" },
+{ nome:"Natal 250g",preco:18,quantidade:0,imagem:"natal.png" },
+{ nome:"Cristal 400g",preco:18,quantidade:0,imagem:"cristal.jpeg" },
+{ nome:"Goiaba 290g",preco:18,quantidade:0,imagem:"goiaba.png" },
+{ nome:"Manteiga 400g",preco:18,quantidade:0,imagem:"manteiga.jpeg" },
+{ nome:"Doce de leite 290g",preco:18,quantidade:0,imagem:"doce de leite.png" },
+{ nome:"Bolacha da vovó 400g",preco:18,quantidade:0,imagem:"IMG-20260306-WA0015.jpg" },
+{ nome:"Palito de chocolate 290g",preco:18,quantidade:0,imagem:"palito chocolate.jpeg" },
+{ nome:"Bolacha sortida 400g",preco:23,quantidade:0,imagem:"sortida.jpeg",destaque:true }
 ];
 
-/* LOCAL STORAGE */
 function salvarCarrinho(){
-  localStorage.setItem(
-    "carrinho",
-    JSON.stringify(produtos)
-  );
+localStorage.setItem("carrinho",JSON.stringify(produtos));
 }
 
 function carregarCarrinho(){
-  const dados = localStorage.getItem("carrinho");
-  if(dados){
-    produtos = JSON.parse(dados);
-  }
+const dados=localStorage.getItem("carrinho");
+if(dados){produtos=JSON.parse(dados);}
 }
-
 carregarCarrinho();
 
-/* NOME SALVO */
-const campoNome = document.getElementById("nomeCliente");
-const nomeSalvo = localStorage.getItem("nomeCliente");
-
+const nomeSalvo=localStorage.getItem("nomeCliente");
 if(nomeSalvo){
-  campoNome.value = nomeSalvo;
+document.getElementById("nomeCliente").value=nomeSalvo;
 }
 
-campoNome.addEventListener("input", function(){
-  localStorage.setItem("nomeCliente", this.value);
+document.getElementById("nomeCliente").addEventListener("input",function(){
+localStorage.setItem("nomeCliente",this.value);
 });
 
-/* RENDER PRODUTOS */
-const listaProdutos = document.getElementById("listaProdutos");
+const listaProdutos=document.getElementById("listaProdutos");
 
-function renderizarProdutos(){
-  listaProdutos.innerHTML = "";
+produtos.forEach((p,i)=>{
+listaProdutos.innerHTML+=`
+<div class="produto">
+<img src="${p.imagem}" onclick="abrirImagem('${p.imagem}')">
+<h3>${p.nome}</h3>
+<p class="preco">R$ ${p.preco.toFixed(2).replace('.',',')}</p>
+<div class="controle-produto">
+<button onclick="diminuirQuantidade(${i})">-</button>
+<span id="qtd-${i}">${p.quantidade}</span>
+<button onclick="aumentarQuantidade(${i})">+</button>
+</div>
+</div>`;
+});
 
-  produtos.forEach((p, i) => {
-    listaProdutos.innerHTML += `
-      <div class="produto">
-        <img
-          src="${p.imagem}"
-          alt="${p.nome}"
-          onclick="abrirImagem('${p.imagem}')"
-        >
-
-        <h3>${p.nome}</h3>
-
-        <p class="preco">
-          R$ ${p.preco.toFixed(2).replace(".", ",")}
-        </p>
-
-        <div class="controle-produto">
-          <button onclick="diminuirQuantidade(${i})">-</button>
-          <span id="qtd-${i}">${p.quantidade}</span>
-          <button onclick="aumentarQuantidade(${i})">+</button>
-        </div>
-      </div>
-    `;
-  });
-}
-
-renderizarProdutos();
-
-/* CONTADOR */
 function atualizarContador(){
-  const total = produtos.reduce(
-    (acc, p) => acc + p.quantidade,
-    0
-  );
+const total=produtos.reduce((a,p)=>a+p.quantidade,0);
+document.getElementById("contadorItens").textContent=total;
 
-  document.getElementById("contadorItens").textContent = total;
+produtos.forEach((p,i)=>{
+document.getElementById(`qtd-${i}`).textContent=p.quantidade;
+});
 
-  produtos.forEach((p, i) => {
-    const el = document.getElementById(`qtd-${i}`);
-    if(el){
-      el.textContent = p.quantidade;
-    }
-  });
-
-  salvarCarrinho();
+salvarCarrinho();
 }
 
-/* CARRINHO */
 function abrirCarrinho(){
-  document
-    .getElementById("modalCarrinho")
-    .classList.add("ativo");
-
-  atualizarModal();
+document.getElementById("modalCarrinho").classList.add("ativo");
+atualizarModal();
 }
 
 function fecharCarrinho(){
-  document
-    .getElementById("modalCarrinho")
-    .classList.remove("ativo");
+document.getElementById("modalCarrinho").classList.remove("ativo");
 }
 
 function aumentarQuantidade(i){
-  produtos[i].quantidade++;
-  atualizarContador();
-  atualizarModal();
+produtos[i].quantidade++;
+atualizarContador();
+atualizarModal();
 }
 
 function diminuirQuantidade(i){
-  if(produtos[i].quantidade > 0){
-    produtos[i].quantidade--;
-  }
-
-  atualizarContador();
-  atualizarModal();
+if(produtos[i].quantidade>0)produtos[i].quantidade--;
+atualizarContador();
+atualizarModal();
 }
 
 function removerItem(i){
-  if(confirm("Remover item?")){
-    produtos[i].quantidade = 0;
-    atualizarContador();
-    atualizarModal();
-  }
+if(confirm("Remover item?")){
+produtos[i].quantidade=0;
+atualizarContador();
+atualizarModal();
+}
 }
 
 function atualizarModal(){
-  const container = document.getElementById("listaCarrinho");
-  container.innerHTML = "";
+const container=document.getElementById("listaCarrinho");
+container.innerHTML="";
 
-  const selecionados = produtos
-    .map((p, i) => ({ ...p, i }))
-    .filter(p => p.quantidade > 0);
+const selecionados=produtos.map((p,i)=>({...p,i})).filter(p=>p.quantidade>0);
 
-  selecionados.forEach(p => {
-    const subtotal = p.quantidade * p.preco;
+selecionados.forEach(p=>{
+const subtotal=p.quantidade*p.preco;
 
-    container.innerHTML += `
-      <div class="item-carrinho">
+container.innerHTML+=`
+<div class="item-carrinho">
+<img src="${p.imagem}">
+<div class="item-info">
+<strong>${p.quantidade}x ${p.nome}</strong>
+<div class="controle-quantidade">
+<button onclick="diminuirQuantidade(${p.i})">-</button>
+<button onclick="aumentarQuantidade(${p.i})">+</button>
+</div>
+</div>
+<div>R$ ${subtotal.toFixed(2).replace('.',',')}</div>
+<button class="btn-remover" onclick="removerItem(${p.i})">🗑️</button>
+</div>`;
+});
 
-        <img src="${p.imagem}" alt="${p.nome}">
-
-        <div class="item-info">
-          <strong>${p.quantidade}x ${p.nome}</strong>
-
-          <div class="controle-quantidade">
-            <button onclick="diminuirQuantidade(${p.i})">-</button>
-            <button onclick="aumentarQuantidade(${p.i})">+</button>
-          </div>
-        </div>
-
-        <div class="subtotal">
-          R$ ${subtotal.toFixed(2).replace(".", ",")}
-        </div>
-
-        <button
-          class="btn-remover"
-          onclick="removerItem(${p.i})"
-        >
-          🗑️
-        </button>
-
-      </div>
-    `;
-  });
-
-  const total = produtos.reduce(
-    (acc, p) => acc + (p.quantidade * p.preco),
-    0
-  );
-
-  document.getElementById("totalModal").textContent =
-    "Total: R$ " +
-    total.toFixed(2).replace(".", ",");
+const total=produtos.reduce((a,p)=>a+(p.quantidade*p.preco),0);
+document.getElementById("totalModal").textContent="Total: R$"+total.toFixed(2).replace('.',',');
 }
-
-/* WHATSAPP */
+  
 function enviarPedido(){
-  const nome = campoNome.value.trim();
+const nome=document.getElementById("nomeCliente").value.trim();
+if(!nome){alert("Digite seu nome.");return;}
 
-  if(!nome){
-    alert("Digite seu nome.");
-    return;
-  }
+const selecionados=produtos.filter(p=>p.quantidade>0);
+if(selecionados.length===0){alert("Carrinho vazio!");return;}
 
-  const selecionados = produtos.filter(
-    p => p.quantidade > 0
-  );
+let msg="🍪 Pedido Djo Bolachas 🍪\n\nCliente: "+nome+"\n\n";
+let total=0;
 
-  if(selecionados.length === 0){
-    alert("Carrinho vazio!");
-    return;
-  }
+selecionados.forEach(p=>{
+const subtotal=p.quantidade*p.preco;
+total+=subtotal;
+msg+=`${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}\n`;
+});
 
-  let mensagem =
-`🍪 Pedido Djo Bolachas 🍪
+msg+="\nTotal: R$ "+total.toFixed(2).replace('.',',');
 
-Cliente: ${nome}
+window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`,"_blank");
 
-`;
+/* 🔥 LIMPAR CARRINHO */
+produtos.forEach(p=>p.quantidade=0);
+atualizarContador();
+atualizarModal();
+localStorage.removeItem("carrinho");
 
-  let total = 0;
-
-  selecionados.forEach(p => {
-    const subtotal = p.quantidade * p.preco;
-    total += subtotal;
-
-    mensagem +=
-`${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace(".", ",")}
-`;
-  });
-
-  mensagem += `
-Total: R$ ${total.toFixed(2).replace(".", ",")}
-`;
-
-  window.open(
-    `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`,
-    "_blank"
-  );
-
-  /* LIMPAR CARRINHO */
-  produtos.forEach(p => {
-    p.quantidade = 0;
-  });
-
-  atualizarContador();
-  atualizarModal();
-
-  localStorage.removeItem("carrinho");
-
-  fecharCarrinho();
+fecharCarrinho();
 }
 
-/* IMAGEM GRANDE */
 function abrirImagem(src){
-  document.getElementById("imagemGrande").src = src;
-  document.getElementById("modalImagem").style.display = "flex";
+document.getElementById("imagemGrande").src=src;
+document.getElementById("modalImagem").style.display="flex";
 }
 
 function fecharImagem(){
-  document.getElementById("modalImagem").style.display = "none";
+document.getElementById("modalImagem").style.display="none";
 }
 
 atualizarContador();
+
 </script>
 
 </body>
