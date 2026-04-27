@@ -1,16 +1,16 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Evitar cache -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 
 <title>Djo Bolachas</title>
-  
+ 
 <style>
 body{font-family:Arial;margin:0;background:#f8f5f2;}
 
@@ -100,6 +100,7 @@ background:none;border:none;cursor:pointer;
 .btn-finalizar{
 background:green;color:white;border:none;
 padding:12px;border-radius:10px;margin-top:10px;
+cursor:pointer;
 }
 
 .btn-voltar{
@@ -128,7 +129,7 @@ max-width:90%;max-height:90%;
 <div class="produtos" id="listaProdutos"></div>
 
 <button class="carrinho-flutuante" onclick="abrirCarrinho()">
-🛒<div class="badge" id="contadorItens">0</div>
+<div class="badge" id="contadorItens">0</div>
 </button>
 
 <div id="modalCarrinho" class="modal">
@@ -182,13 +183,23 @@ let produtos=[
 { nome:"Bolacha sortida 400g",preco:23,quantidade:0,imagem:"sortida.jpeg",destaque:true }
 ];
 
+/* NOVA LÓGICA DE SALVAR/CARREGAR CARRINHO */
 function salvarCarrinho(){
-localStorage.setItem("carrinho",JSON.stringify(produtos));
+  const carrinhoResumo = produtos.map(p => ({ nome: p.nome, quantidade: p.quantidade }));
+  localStorage.setItem("carrinho", JSON.stringify(carrinhoResumo));
 }
 
 function carregarCarrinho(){
-const dados=localStorage.getItem("carrinho");
-if(dados){produtos=JSON.parse(dados);}
+  const dados = localStorage.getItem("carrinho");
+  if(dados){
+    const carrinhoSalvo = JSON.parse(dados);
+    carrinhoSalvo.forEach(itemSalvo => {
+      const produtoAtual = produtos.find(p => p.nome === itemSalvo.nome);
+      if(produtoAtual){
+        produtoAtual.quantidade = itemSalvo.quantidade;
+      }
+    });
+  }
 }
 carregarCarrinho();
 
@@ -277,14 +288,14 @@ container.innerHTML+=`
 </div>
 </div>
 <div>R$ ${subtotal.toFixed(2).replace('.',',')}</div>
-<button class="btn-remover" onclick="removerItem(${p.i})">🗑️</button>
+<button class="btn-remover" onclick="removerItem(${p.i})">✖</button>
 </div>`;
 });
 
 const total=produtos.reduce((a,p)=>a+(p.quantidade*p.preco),0);
 document.getElementById("totalModal").textContent="Total: R$"+total.toFixed(2).replace('.',',');
 }
-  
+ 
 function enviarPedido(){
 const nome=document.getElementById("nomeCliente").value.trim();
 if(!nome){alert("Digite seu nome.");return;}
@@ -292,7 +303,7 @@ if(!nome){alert("Digite seu nome.");return;}
 const selecionados=produtos.filter(p=>p.quantidade>0);
 if(selecionados.length===0){alert("Carrinho vazio!");return;}
 
-let msg="🍪 Pedido Djo Bolachas 🍪\n\nCliente: "+nome+"\n\n";
+let msg=" Pedido Djo Bolachas \n\nCliente: "+nome+"\n\n";
 let total=0;
 
 selecionados.forEach(p=>{
@@ -305,7 +316,7 @@ msg+="\nTotal: R$ "+total.toFixed(2).replace('.',',');
 
 window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`,"_blank");
 
-/* 🔥 LIMPAR CARRINHO */
+/* LIMPAR CARRINHO */
 produtos.forEach(p=>p.quantidade=0);
 atualizarContador();
 atualizarModal();
