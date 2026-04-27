@@ -284,7 +284,7 @@ container.innerHTML+=`
 const total=produtos.reduce((a,p)=>a+(p.quantidade*p.preco),0);
 document.getElementById("totalModal").textContent="Total: R$"+total.toFixed(2).replace('.',',');
 }
-
+  
 function enviarPedido(){
 const nome=document.getElementById("nomeCliente").value.trim();
 if(!nome){alert("Digite seu nome.");return;}
