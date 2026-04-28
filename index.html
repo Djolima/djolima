@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,7 +9,7 @@
 <meta http-equiv="Expires" content="0">
 
 <title>Djo Bolachas</title>
- 
+  
 <style>
 body{font-family:Arial;margin:0;background:#f8f5f2;}
 
@@ -48,7 +47,13 @@ background:#8B4513;color:white;cursor:pointer;
 position:fixed;bottom:20px;right:20px;
 background:#8B4513;color:white;
 width:65px;height:65px;border-radius:50%;
-font-size:24px;cursor:pointer;
+font-size:28px;
+cursor:pointer;
+display:flex;
+justify-content:center;
+align-items:center;
+border:none;
+z-index: 100;
 }
 
 .badge{
@@ -56,6 +61,7 @@ position:absolute;top:-5px;right:-5px;
 background:red;color:white;font-size:13px;
 width:22px;height:22px;border-radius:50%;
 display:flex;justify-content:center;align-items:center;
+font-family:Arial;
 }
 
 .modal{
@@ -63,6 +69,7 @@ display:none;position:fixed;top:0;right:0;
 width:100%;height:100%;
 background:rgba(0,0,0,0.4);
 justify-content:flex-end;
+z-index: 200;
 }
 
 .modal.ativo{display:flex;}
@@ -95,12 +102,19 @@ color:white;border:none;border-radius:6px;
 .btn-remover{
 margin-left:auto;font-size:18px;
 background:none;border:none;cursor:pointer;
+color: #333;
 }
 
 .btn-finalizar{
 background:green;color:white;border:none;
 padding:12px;border-radius:10px;margin-top:10px;
 cursor:pointer;
+font-weight:bold;
+}
+
+.btn-finalizar:disabled{
+background:#ccc;
+cursor:not-allowed;
 }
 
 .btn-voltar{
@@ -114,6 +128,7 @@ display:none;position:fixed;
 top:0;left:0;width:100%;height:100%;
 background:rgba(0,0,0,0.85);
 justify-content:center;align-items:center;
+z-index: 300;
 }
 
 .modal-imagem img{
@@ -129,7 +144,8 @@ max-width:90%;max-height:90%;
 <div class="produtos" id="listaProdutos"></div>
 
 <button class="carrinho-flutuante" onclick="abrirCarrinho()">
-<div class="badge" id="contadorItens">0</div>
+  🛒
+  <div class="badge" id="contadorItens">0</div>
 </button>
 
 <div id="modalCarrinho" class="modal">
@@ -137,13 +153,13 @@ max-width:90%;max-height:90%;
 
 <h2>Seu Carrinho</h2>
 
-<input type="text" id="nomeCliente" placeholder="Digite seu nome">
+<input type="text" id="nomeCliente" placeholder="Digite seu nome" style="padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; width: calc(100% - 22px);">
 
-<div id="listaCarrinho"></div>
+<div id="listaCarrinho" style="flex: 1; overflow-y: auto;"></div>
 
 <h3 id="totalModal">Total: R$0,00</h3>
 
-<button class="btn-finalizar" onclick="enviarPedido()">
+<button class="btn-finalizar" id="btnFinalizar" onclick="enviarPedido()">
 Finalizar no WhatsApp
 </button>
 
@@ -183,7 +199,6 @@ let produtos=[
 { nome:"Bolacha sortida 400g",preco:23,quantidade:0,imagem:"sortida.jpeg",destaque:true }
 ];
 
-/* NOVA LÓGICA DE SALVAR/CARREGAR CARRINHO */
 function salvarCarrinho(){
   const carrinhoResumo = produtos.map(p => ({ nome: p.nome, quantidade: p.quantidade }));
   localStorage.setItem("carrinho", JSON.stringify(carrinhoResumo));
@@ -295,34 +310,67 @@ container.innerHTML+=`
 const total=produtos.reduce((a,p)=>a+(p.quantidade*p.preco),0);
 document.getElementById("totalModal").textContent="Total: R$"+total.toFixed(2).replace('.',',');
 }
- 
+  
 function enviarPedido(){
-const nome=document.getElementById("nomeCliente").value.trim();
-if(!nome){alert("Digite seu nome.");return;}
+  const nome=document.getElementById("nomeCliente").value.trim();
+  if(!nome){alert("Digite seu nome para enviar o pedido.");return;}
 
-const selecionados=produtos.filter(p=>p.quantidade>0);
-if(selecionados.length===0){alert("Carrinho vazio!");return;}
+  const selecionados=produtos.filter(p=>p.quantidade>0);
+  if(selecionados.length===0){alert("Seu carrinho está vazio!");return;}
 
-let msg=" Pedido Djo Bolachas \n\nCliente: "+nome+"\n\n";
-let total=0;
+  // CONFIGURAÇÃO DA PLANILHA (Cole sua URL aqui)
+  const URL_DA_PLANILHA = "https://script.google.com/macros/s/AKfycbylx1F23hILQOq_sNkkATzEjs7_VFG86GwxK11ekffJb7s4QN6yCvt_SO1OF94vbh18/exec";
 
-selecionados.forEach(p=>{
-const subtotal=p.quantidade*p.preco;
-total+=subtotal;
-msg+=`${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}\n`;
-});
+  let msgWhatsApp = "*Pedido Djo Bolachas* \n\n*Cliente:* "+nome+"\n\n";
+  let resumoPlanilha = "";
+  let total = 0;
 
-msg+="\nTotal: R$ "+total.toFixed(2).replace('.',',');
+  selecionados.forEach(p=>{
+    const subtotal = p.quantidade * p.preco;
+    total += subtotal;
+    let itemTexto = `${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}`;
+    msgWhatsApp += itemTexto + "\n";
+    resumoPlanilha += itemTexto + " | ";
+  });
 
-window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`,"_blank");
+  const totalFormatado = "R$ " + total.toFixed(2).replace('.',',');
+  msgWhatsApp += "\n*Total: " + totalFormatado + "*";
 
-/* LIMPAR CARRINHO */
-produtos.forEach(p=>p.quantidade=0);
-atualizarContador();
-atualizarModal();
-localStorage.removeItem("carrinho");
+  const btn = document.getElementById('btnFinalizar');
+  const textoOriginal = btn.innerHTML;
+  btn.innerHTML = "Processando...";
+  btn.disabled = true;
 
-fecharCarrinho();
+  // Enviar para Planilha
+  fetch(URL_DA_PLANILHA, {
+    method: "POST",
+    body: JSON.stringify({
+      nome: nome,
+      pedido: resumoPlanilha,
+      total: totalFormatado
+    })
+  })
+  .then(() => {
+    // Abrir WhatsApp
+    window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msgWhatsApp)}`, "_blank");
+    finalizarLimpeza(btn, textoOriginal);
+  })
+  .catch(erro => {
+    // Se a planilha falhar, ainda abre o WhatsApp
+    console.error("Erro planilha:", erro);
+    window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msgWhatsApp)}`, "_blank");
+    finalizarLimpeza(btn, textoOriginal);
+  });
+}
+
+function finalizarLimpeza(btn, textoOriginal){
+  produtos.forEach(p=>p.quantidade=0);
+  atualizarContador();
+  atualizarModal();
+  localStorage.removeItem("carrinho");
+  fecharCarrinho();
+  btn.innerHTML = textoOriginal;
+  btn.disabled = false;
 }
 
 function abrirImagem(src){
