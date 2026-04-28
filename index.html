@@ -11,7 +11,7 @@
 <title>Djo Bolachas</title>
   
 <style>
-body{font-family:Arial;margin:0;background:#f8f5f2;}
+body{font-family:Arial, sans-serif;margin:0;background:#f8f5f2;}
 
 header{background:#8B4513;color:white;padding:15px;text-align:center;}
 
@@ -61,7 +61,6 @@ position:absolute;top:-5px;right:-5px;
 background:red;color:white;font-size:13px;
 width:22px;height:22px;border-radius:50%;
 display:flex;justify-content:center;align-items:center;
-font-family:Arial;
 }
 
 .modal{
@@ -318,45 +317,51 @@ function enviarPedido(){
   const selecionados=produtos.filter(p=>p.quantidade>0);
   if(selecionados.length===0){alert("Seu carrinho está vazio!");return;}
 
-  // CONFIGURAÇÃO DA PLANILHA (Cole sua URL aqui)
+  // URL DA SUA PLANILHA (COLE AQUI A URL DO SEU SCRIPT DO GOOGLE)
   const URL_DA_PLANILHA = "https://script.google.com/macros/s/AKfycbylx1F23hILQOq_sNkkATzEjs7_VFG86GwxK11ekffJb7s4QN6yCvt_SO1OF94vbh18/exec";
 
   let msgWhatsApp = "*Pedido Djo Bolachas* \n\n*Cliente:* "+nome+"\n\n";
-  let resumoPlanilha = "";
-  let total = 0;
+  let itensParaPlanilha = [];
+  let totalGeral = 0;
 
   selecionados.forEach(p=>{
     const subtotal = p.quantidade * p.preco;
-    total += subtotal;
-    let itemTexto = `${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}`;
-    msgWhatsApp += itemTexto + "\n";
-    resumoPlanilha += itemTexto + " | ";
+    totalGeral += subtotal;
+    
+    // Texto para o WhatsApp
+    msgWhatsApp += `${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}\n`;
+    
+    // Objeto para a Planilha (Separado por item)
+    itensParaPlanilha.push({
+      nome: p.nome,
+      qtd: p.quantidade,
+      precoUnit: "R$ " + p.preco.toFixed(2).replace('.',','),
+      subtotal: "R$ " + subtotal.toFixed(2).replace('.',',')
+    });
   });
 
-  const totalFormatado = "R$ " + total.toFixed(2).replace('.',',');
+  const totalFormatado = "R$ " + totalGeral.toFixed(2).replace('.',',');
   msgWhatsApp += "\n*Total: " + totalFormatado + "*";
 
   const btn = document.getElementById('btnFinalizar');
   const textoOriginal = btn.innerHTML;
-  btn.innerHTML = "Processando...";
+  btn.innerHTML = "Salvando Pedido...";
   btn.disabled = true;
 
-  // Enviar para Planilha
+  // Enviar para Planilha (Manda a lista de itens agora)
   fetch(URL_DA_PLANILHA, {
     method: "POST",
     body: JSON.stringify({
       nome: nome,
-      pedido: resumoPlanilha,
+      itens: itensParaPlanilha,
       total: totalFormatado
     })
   })
   .then(() => {
-    // Abrir WhatsApp
     window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msgWhatsApp)}`, "_blank");
     finalizarLimpeza(btn, textoOriginal);
   })
   .catch(erro => {
-    // Se a planilha falhar, ainda abre o WhatsApp
     console.error("Erro planilha:", erro);
     window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msgWhatsApp)}`, "_blank");
     finalizarLimpeza(btn, textoOriginal);
