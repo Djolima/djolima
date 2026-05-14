@@ -178,9 +178,10 @@ Voltar
 const telefone="5548992236978";
 
 let produtos=[
+  
 { nome:"Alfajor Nutela",preco:22,quantidade:0,imagem:"alfajor.png" },
-{ nome:"Bolacha de Mel",preco:20,quantidade:0,imagem:"paodemel.png"},
-{ nome:"Pão",preco:15,quantidade:0,imagem:"pao.jpeg" },
+{ nome:"Pão de Mel",preco:20,quantidade:0,imagem:"paodemel.png"},
+{ nome:"*Pão*",preco:15,quantidade:0,imagem:"pao.jpeg" },
 { nome:"Polvilho 200g",preco:13,quantidade:0,imagem:"polvilho.png" },
 { nome:"Laranja 250g",preco:13,quantidade:0,imagem:"laranja.png" },
 { nome:"Cookies 250g",preco:13,quantidade:0,imagem:"cookies.jpeg",destaque:true },
@@ -247,7 +248,7 @@ const total=produtos.reduce((a,p)=>a+p.quantidade,0);
 document.getElementById("contadorItens").textContent=total;
 
 produtos.forEach((p,i)=>{
-document.getElementById(qtd-${i}).textContent=p.quantidade;
+document.getElementById(`qtd-${i}`).textContent=p.quantidade;
 });
 
 salvarCarrinho();
@@ -256,16 +257,10 @@ salvarCarrinho();
 function abrirCarrinho(){
 document.getElementById("modalCarrinho").classList.add("ativo");
 atualizarModal();
-// Adiciona o carrinho no histórico para o botão voltar funcionar
-window.history.pushState({ modal: "carrinho" }, "", "#carrinho");
 }
 
-function fecharCarrinho(peloBotaoVoltar = false){
+function fecharCarrinho(){
 document.getElementById("modalCarrinho").classList.remove("ativo");
-// Se fechou no botão do site (e não no voltar do celular), limpa o histórico
-if(peloBotaoVoltar !== true && window.location.hash === "#carrinho") {
-  window.history.back();
-}
 }
 
 function aumentarQuantidade(i){
@@ -308,7 +303,7 @@ container.innerHTML+=`
 </div>
 </div>
 <div>R$ ${subtotal.toFixed(2).replace('.',',')}</div>
-<button class="btn-remover" onclick="removerItem(${p.i})">✖️</button>
+<button class="btn-remover" onclick="removerItem(${p.i})">✖</button>
 </div>`;
 });
 
@@ -324,9 +319,9 @@ function enviarPedido(){
   if(selecionados.length===0){alert("Seu carrinho está vazio!");return;}
 
   // URL DA SUA PLANILHA (COLE AQUI A URL DO SEU SCRIPT DO GOOGLE)
-  const URL_DA_PLANILHA = "COLE_AQUI_A_URL_DA_SUA_PLANILHA";
+  const URL_DA_PLANILHA = "https://script.google.com/macros/s/AKfycbylx1F23hILQOq_sNkkATzEjs7_VFG86GwxK11ekffJb7s4QN6yCvt_SO1OF94vbh18/exec";
 
-  let msgWhatsApp = "Pedido Djo Bolachas \n\n*Cliente:* "+nome+"\n\n";
+  let msgWhatsApp = "*Pedido Djo Bolachas* \n\n*Cliente:* "+nome+"\n\n";
   let itensParaPlanilha = [];
   let totalGeral = 0;
 
@@ -335,7 +330,7 @@ function enviarPedido(){
     totalGeral += subtotal;
     
     // Texto para o WhatsApp
-    msgWhatsApp += ${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}\n;
+    msgWhatsApp += `${p.quantidade}x ${p.nome} - R$ ${subtotal.toFixed(2).replace('.',',')}\n`;
     
     // Objeto para a Planilha (Separado por item)
     itensParaPlanilha.push({
@@ -354,7 +349,7 @@ function enviarPedido(){
   btn.innerHTML = "Salvando Pedido...";
   btn.disabled = true;
 
-  // Enviar para Planilha
+  // Enviar para Planilha (Manda a lista de itens agora)
   fetch(URL_DA_PLANILHA, {
     method: "POST",
     body: JSON.stringify({
@@ -364,12 +359,12 @@ function enviarPedido(){
     })
   })
   .then(() => {
-    window.open(https://wa.me/${telefone}?text=${encodeURIComponent(msgWhatsApp)}, "_blank");
+    window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msgWhatsApp)}`, "_blank");
     finalizarLimpeza(btn, textoOriginal);
   })
   .catch(erro => {
     console.error("Erro planilha:", erro);
-    window.open(https://wa.me/${telefone}?text=${encodeURIComponent(msgWhatsApp)}, "_blank");
+    window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msgWhatsApp)}`, "_blank");
     finalizarLimpeza(btn, textoOriginal);
   });
 }
@@ -387,29 +382,11 @@ function finalizarLimpeza(btn, textoOriginal){
 function abrirImagem(src){
 document.getElementById("imagemGrande").src=src;
 document.getElementById("modalImagem").style.display="flex";
-// Adiciona a imagem no histórico para o botão voltar funcionar
-window.history.pushState({ modal: "imagem" }, "", "#imagem");
 }
 
-function fecharImagem(peloBotaoVoltar = false){
+function fecharImagem(){
 document.getElementById("modalImagem").style.display="none";
-// Se fechou clicando na tela (e não no voltar do celular), limpa o histórico
-if(peloBotaoVoltar !== true && window.location.hash === "#imagem") {
-  window.history.back();
 }
-}
-
-// CAPTURA O BOTÃO VOLTAR DO CELULAR/NAVEGADOR
-window.addEventListener("popstate", function(event) {
-  // Se a imagem estiver aberta, fecha a imagem
-  if (document.getElementById("modalImagem").style.display === "flex") {
-    fecharImagem(true);
-  } 
-  // Se o carrinho estiver aberto, fecha o carrinho
-  else if (document.getElementById("modalCarrinho").classList.contains("ativo")) {
-    fecharCarrinho(true);
-  }
-});
 
 atualizarContador();
 
