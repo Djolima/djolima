@@ -44,7 +44,11 @@ background:#8B4513;color:white;cursor:pointer;
 }
 
 .carrinho-flutuante{
-position:fixed;bottom:20px;right:20px;
+  position: fixed;
+  top: 50%;          /* coloca no meio vertical */
+  right: 20px;       /* fixa no canto direito */
+  transform: translateY(-50%); /* centraliza exatamente no meio */
+  z-index: 1000;     /* garante que fique acima de outros elementos */
 background:#8B4513;color:white;
 width:65px;height:65px;border-radius:50%;
 font-size:28px;
@@ -179,7 +183,7 @@ const telefone="5548992236978";
 
 let produtos=[
   
-{ nome:"Alfajor Nutela",preco:22,quantidade:0,imagem:"alfajor.png" },
+{ nome:"Alfajor Nutella",preco:22,quantidade:0,imagem:"alfajor.png" },
 { nome:"Pão de Mel",preco:20,quantidade:0,imagem:"paodemel.png"},
 { nome:"Pão",preco:15,quantidade:0,imagem:"pao.jpeg" },
 { nome:"Polvilho 200g",preco:13,quantidade:0,imagem:"polvilho.png" },
